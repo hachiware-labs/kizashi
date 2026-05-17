@@ -18,6 +18,8 @@
     "node": ">=18"
   },
   "files": [
+    "README.md",
+    "README_ja.md",
     "SKILL.md",
     "agents/",
     "assets/",
