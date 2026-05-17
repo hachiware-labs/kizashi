@@ -1,0 +1,60 @@
+hypothesis: "agent-workspace-orchestration"
+last_updated: "2026-05-17"
+scores:
+  realism:
+    score: 5
+    reason: "X 20件のうち複数がCodex workflow、tmux for agents、Kimi WebBridge、Hooks、Obsidian memoryに集中している。"
+  pain_depth:
+    score: 4
+    reason: "agent stateや文脈喪失は時間、信頼、handoff、review qualityに影響する。"
+  frequency:
+    score: 4
+    reason: "AI-heavy developerでは日常的に起きる可能性が高い。"
+  future_growth:
+    score: 5
+    reason: "long-running agent、browser agent、local LLM、multi-agent利用が増えるほど顕在化する。"
+  existing_solution_gap:
+    score: 4
+    reason: "tmuxやメモはagent固有のapproval、context provenance、browser actionを扱えない。"
+  hachiware_fit:
+    score: 5
+    reason: "Delta Context / Argusの文脈・証跡管理と強く合う。"
+  mvp_feasibility:
+    score: 5
+    reason: "Markdown-firstのagent-sessions.mdで小さく検証できる。"
+  message_clarity:
+    score: 4
+    reason: "agentが増えるとterminal tabでは足りない、という説明は早期ユーザーに伝わりやすい。"
+  monetization_potential:
+    score: 3
+    reason: "個人課金から始まり、team workflowに広がるかは検証が必要。"
+  user_count:
+    score: 4
+    reason: "現在は早期ユーザー中心だが、Codex/Claude Code/browser agent利用者増に伴って伸びる。"
+  business_scale:
+    score: 3
+    reason: "初期はwedgeだがteam-level agent operationsに拡張可能。"
+  spike_strength:
+    score: 5
+    type: "mixed"
+    reason: "早期ユーザーの深いpainと将来のuser_count growthが両方ある。"
+evidence:
+  - source: "kizashi/inputs/x-bookmarks/2026-05-17.md"
+    original_url: "https://x.com/dingyi/status/2055528179830571472"
+    signal: "tmux for agentsへの関心。"
+    supports: "agent session orchestration需要。"
+  - source: "kizashi/inputs/x-bookmarks/2026-05-17.md"
+    original_url: "https://x.com/AI_masaou/status/2055253385851568608"
+    signal: "Kimi WebBridge real browser session操作。"
+    supports: "browser actionを含むagent workspace需要。"
+  - source: "kizashi/inputs/hatena/2026-05-17-ai-trends.md"
+    original_url: "https://zenn.dev/shio_shoppaize/articles/5fee11d03a11a1"
+    signal: "Claude CodeでAI部下10人のmulti-agent運用。"
+    supports: "agent数増加による管理pain。"
+counter_evidence:
+  - "native tool workspaceがこの需要を吸収する可能性がある。"
+  - "一般開発者にはまだ早い可能性がある。"
+recommendation: "validate"
+change_history:
+  - date: "2026-05-17"
+    change: "E2E scenario testで作成。"

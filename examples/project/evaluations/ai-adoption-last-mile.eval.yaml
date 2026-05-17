@@ -1,0 +1,52 @@
+hypothesis: "ai-adoption-last-mile"
+last_updated: "2026-05-17"
+scores:
+  realism:
+    score: 4
+    reason: "X and Hatena signals both mention realistic adoption, AI PoC failure, and business impact measurement."
+  pain_depth:
+    score: 5
+    reason: "Failed AI adoption wastes budget and prevents workflow transformation."
+  frequency:
+    score: 3
+    reason: "Common across organizations, but Kizashi needs narrower evidence around Hachiware's target customers."
+  future_growth:
+    score: 5
+    reason: "AI tools are spreading faster than organizations can redesign work."
+  existing_solution_gap:
+    score: 3
+    reason: "Consulting and vendor success exist, but reusable implementation artifacts may be missing."
+  hachiware_fit:
+    score: 3
+    reason: "Fit is plausible through Nagomi/refina but less direct than developer-agent tooling."
+  mvp_feasibility:
+    score: 4
+    reason: "A playbook and measurement template can be tested quickly."
+  message_clarity:
+    score: 5
+    reason: "The demo-to-daily-work gap is easy to communicate."
+  monetization_potential:
+    score: 4
+    reason: "Organizations already pay for implementation support, though productization is uncertain."
+  user_count:
+    score: 5
+    reason: "AI adoption and PoC failure are broad across industries and functions."
+  business_scale:
+    score: 5
+    reason: "Enterprise AI budgets and failed implementation costs can be large."
+  spike_strength:
+    score: 4
+    type: "mixed"
+    reason: "User count and business scale are high, but the hypothesis is broad and should be narrowed."
+evidence:
+  - source: "kizashi/inputs/x-bookmarks/2026-05-17.md"
+    signal: "Bookmark argues AI PoC death is prevented by vendor-supported implementation and adoption."
+  - source: "kizashi/inputs/hatena/2026-05-17-ai-trends.md"
+    signal: "Hatena trend asks whether Copilot actually improves sales outcomes."
+counter_evidence:
+  - "May become services-heavy."
+  - "Hachiware may have stronger differentiation in agent workflow infrastructure."
+recommendation: "park_or_narrow"
+change_history:
+  - date: "2026-05-17"
+    change: "Created evaluation from X bookmark and Hatena signals."

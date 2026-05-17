@@ -1,0 +1,51 @@
+hypothesis: "<slug>"
+last_updated: "YYYY-MM-DD"
+scores:
+  realism:
+    score: 3
+    reason: ""
+  pain_depth:
+    score: 3
+    reason: ""
+  frequency:
+    score: 3
+    reason: ""
+  future_growth:
+    score: 3
+    reason: ""
+  existing_solution_gap:
+    score: 3
+    reason: ""
+  hachiware_fit:
+    score: 3
+    reason: ""
+  mvp_feasibility:
+    score: 3
+    reason: ""
+  message_clarity:
+    score: 3
+    reason: ""
+  monetization_potential:
+    score: 3
+    reason: ""
+  user_count:
+    score: 3
+    reason: ""
+  business_scale:
+    score: 3
+    reason: ""
+  spike_strength:
+    score: 3
+    type: "none"
+    reason: ""
+evidence:
+  - source: ""
+    original_url: ""
+    signal: ""
+    supports: ""
+counter_evidence:
+  - ""
+recommendation: "continue"
+change_history:
+  - date: "YYYY-MM-DD"
+    change: "Created evaluation."

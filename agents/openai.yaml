@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kizashi"
+  short_description: "Turn signals into testable hypotheses"
+  default_prompt: "Use $kizashi to initialize a Kizashi workspace and run a hypothesis review from configured sources."

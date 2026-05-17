@@ -1,0 +1,50 @@
+hypothesis: "agent-workspace-orchestration"
+last_updated: "2026-05-17"
+scores:
+  realism:
+    score: 5
+    reason: "Multiple X bookmarks directly concern Codex workflows, tmux for agents, real-browser agents, Hooks, and agent memory."
+  pain_depth:
+    score: 4
+    reason: "Losing agent state and context affects time, trust, handoff, and quality."
+  frequency:
+    score: 4
+    reason: "Heavy agent users likely encounter this every day, though mainstream frequency needs validation."
+  future_growth:
+    score: 5
+    reason: "More long-running and specialized agents should increase workspace fragmentation."
+  existing_solution_gap:
+    score: 4
+    reason: "Terminal multiplexers and notes do not expose agent-specific state, approvals, or provenance."
+  hachiware_fit:
+    score: 5
+    reason: "Strong fit with Delta Context and Argus as a cross-agent state and evidence layer."
+  mvp_feasibility:
+    score: 5
+    reason: "A Markdown-first session index or local run dashboard can be tested quickly."
+  message_clarity:
+    score: 4
+    reason: "The agent workspace framing is understandable for early adopters."
+  monetization_potential:
+    score: 3
+    reason: "Likely valuable to power users and teams, but willingness to pay needs proof."
+  user_count:
+    score: 4
+    reason: "Still early, but the number of Codex, Claude Code, browser-agent, and local LLM power users appears to be growing."
+  business_scale:
+    score: 3
+    reason: "Initial buyer may be individual or small-team, with larger team budgets possible later."
+  spike_strength:
+    score: 5
+    type: "mixed"
+    reason: "Strong early-user pain plus clear future user-count growth in the user's X bookmark cluster."
+evidence:
+  - source: "kizashi/inputs/x-bookmarks/2026-05-17.md"
+    signal: "Bookmarks include tmux for agents, Kimi WebBridge, Codex Hooks, Codex visual workflow, and Codex + Obsidian memory."
+counter_evidence:
+  - "Native tool workspaces may absorb this need."
+  - "Early adopters may prefer custom toolchains."
+recommendation: "validate"
+change_history:
+  - date: "2026-05-17"
+    change: "Created evaluation from X bookmark signals."

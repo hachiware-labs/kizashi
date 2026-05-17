@@ -1,0 +1,47 @@
+sources:
+  - id: x_bookmarks
+    name: X Bookmarks
+    type: browser_session
+    description: Recent X bookmarks collected through Kimi WebBridge using the user's browser session.
+    provider: kimi-webbridge
+    input_path: kizashi/inputs/x-bookmarks/
+    expected_format: markdown_or_yaml
+    cadence: daily
+    role: external_signal
+
+  - id: wiki_garden
+    name: Wiki Garden
+    type: knowledge_skill
+    description: Internal knowledge, past hypotheses, product concepts, and strategic notes.
+    provider: wiki-garden-skill
+    input_path: kizashi/inputs/wiki-garden/
+    expected_format: markdown
+    cadence: daily
+    role: internal_context
+
+  - id: release_notes
+    name: AI Tool Release Notes
+    type: web_or_manual
+    description: Release notes and changelogs for AI coding tools.
+    input_path: kizashi/inputs/release-notes/
+    expected_format: markdown
+    cadence: weekly
+    role: tool_change
+
+  - id: github_signals
+    name: GitHub Issues and Repositories
+    type: github_or_manual
+    description: GitHub Issues, Discussions, and repositories related to AI agents and developer workflows.
+    input_path: kizashi/inputs/github/
+    expected_format: markdown_or_yaml
+    cadence: weekly
+    role: external_signal
+
+  - id: hatena_ai_trends
+    name: Hatena Bookmark AI Trends
+    type: web_or_manual
+    description: Recent Hatena Bookmark AI trend entries collected from public Hatena pages.
+    input_path: kizashi/inputs/hatena/
+    expected_format: markdown
+    cadence: daily
+    role: external_signal

@@ -1,0 +1,50 @@
+hypothesis: "ai-code-review-definition-shift"
+last_updated: "2026-05-17"
+scores:
+  realism:
+    score: 4
+    reason: "Public discussion around AI-authored rewrites is already raising review-definition concerns."
+  pain_depth:
+    score: 4
+    reason: "Review trust affects production quality, maintainability, and accountability."
+  frequency:
+    score: 3
+    reason: "Likely common in agent-heavy teams, but large AI-generated PRs may not yet be daily."
+  future_growth:
+    score: 5
+    reason: "As agentic coding becomes mainstream, review pressure should increase."
+  existing_solution_gap:
+    score: 4
+    reason: "Tests and summaries do not fully prove comprehension, maintainability, or risk."
+  hachiware_fit:
+    score: 5
+    reason: "Strong fit with Argus, Delta Context, and AI PR review workflows."
+  mvp_feasibility:
+    score: 4
+    reason: "A review packet can be produced as Markdown for existing PRs without deep integration."
+  message_clarity:
+    score: 5
+    reason: "AI makes code cheap; review evidence becomes scarce is a clear message."
+  monetization_potential:
+    score: 3
+    reason: "Budget is plausible but needs proof that teams will pay beyond existing code review tools."
+  user_count:
+    score: 5
+    reason: "If AI-generated PRs become normal, maintainers and reviewers across many teams will face this."
+  business_scale:
+    score: 3
+    reason: "Quality risk is meaningful, but the buyer and standalone budget are not yet clear."
+  spike_strength:
+    score: 4
+    type: "user_count"
+    reason: "The strongest dimension is likely broad user count as AI PRs spread."
+evidence:
+  - source: "kizashi/inputs/hatena/2026-05-17-ai-trends.md"
+    signal: "Hatena technology hot entry discussed AI-generated rewrites and whether tests replace human reading."
+counter_evidence:
+  - "Mature teams may already handle this with tests, ownership, and rollout practices."
+  - "The pain may be concentrated in large-scale refactors rather than everyday work."
+recommendation: "validate"
+change_history:
+  - date: "2026-05-17"
+    change: "Created initial evaluation from Hatena trend signals."

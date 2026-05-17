@@ -1,0 +1,19 @@
+scale:
+  min: 1
+  max: 5
+priority_axes:
+  - realism
+  - pain_depth
+  - future_growth
+  - hachiware_fit
+  - mvp_feasibility
+axes:
+  realism: "Evidence that the pain is already happening or likely soon."
+  pain_depth: "Impact on time, quality, trust, revenue, or operational risk."
+  frequency: "How often the pain repeats."
+  future_growth: "Whether tool adoption or workflow shifts will increase the pain."
+  existing_solution_gap: "How weak current workarounds are."
+  hachiware_fit: "Fit with Hachiware Labs strategy and products."
+  mvp_feasibility: "Ease of testing with a small artifact."
+  message_clarity: "Ease of explaining the pain in one sentence."
+  monetization_potential: "Likelihood a team or company would pay."

@@ -1,0 +1,51 @@
+hypothesis: "ai-agent-security-readiness"
+last_updated: "2026-05-17"
+scores:
+  realism:
+    score: 4
+    reason: "Public discussion already focuses on Claude Code security and enterprise adoption concerns."
+  pain_depth:
+    score: 4
+    reason: "Security approval can block rollout and affects trust, compliance, and developer productivity."
+  frequency:
+    score: 3
+    reason: "Likely repeated per team, repository, and tool, but frequency needs interview validation."
+  future_growth:
+    score: 5
+    reason: "Agent adoption and GitHub-integrated workflows are visibly increasing."
+  existing_solution_gap:
+    score: 4
+    reason: "Vendor docs rarely map directly to local permissions, approval policies, and repository evidence."
+  hachiware_fit:
+    score: 5
+    reason: "Strong fit with Argus, Delta Context, and policy-aware agent workflow tooling."
+  mvp_feasibility:
+    score: 4
+    reason: "A Markdown readiness pack can be generated from repo config, AGENTS.md, and sample run logs."
+  message_clarity:
+    score: 4
+    reason: "The pain is easy to state: teams need proof that agents are safe enough to enable."
+  monetization_potential:
+    score: 4
+    reason: "Security review acceleration is plausible budget territory for teams adopting AI agents."
+  user_count:
+    score: 3
+    reason: "Direct users are platform, security, and developer productivity teams rather than all developers."
+  business_scale:
+    score: 5
+    reason: "Enterprise rollout, compliance, and security risk create high-value stakes."
+  spike_strength:
+    score: 5
+    type: "business_scale"
+    reason: "The strongest dimension is enterprise budget and operational risk, not raw user count."
+evidence:
+  - source: "kizashi/inputs/hatena/2026-05-17-ai-trends.md"
+    signal: "Hatena AI search surfaced a highly bookmarked Claude Code AI agent security article."
+  - source: "kizashi/inputs/x-bookmarks/2026-05-17.md"
+    signal: "Bookmarks include Codex Hooks, real-browser agent control, local LLM usage, and agent workflow tooling."
+counter_evidence:
+  - "Vendor enterprise controls may already cover part of the pain."
+recommendation: "validate"
+change_history:
+  - date: "2026-05-17"
+    change: "Created initial evaluation from Hatena and X bookmark signals."

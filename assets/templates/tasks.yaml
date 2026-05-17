@@ -1,0 +1,61 @@
+tasks:
+  - id: daily_kizashi_log
+    name: Daily Kizashi Log
+    mode: daily_log
+    cadence: daily
+    sources:
+      - x_bookmarks
+      - wiki_garden
+    actions:
+      - consume_inputs
+      - extract_signals
+      - match_existing_hypotheses
+      - improve_existing_hypotheses
+      - update_evaluations_if_needed
+      - create_short_log
+    policy:
+      prefer_existing_hypotheses: true
+      create_new_hypothesis_only_if_distinct: true
+      keep_log_short: true
+      output_locale: user
+      require_original_url: true
+      require_spike_for_new_hypothesis: true
+
+  - id: weekly_kizashi_review
+    name: Weekly Kizashi Review
+    mode: periodic_review
+    cadence: weekly
+    sources:
+      - x_bookmarks
+      - wiki_garden
+      - release_notes
+      - github_signals
+    themes:
+      - ai_coding_agent
+      - agent_memory
+      - agent_handoff
+      - ai_pr_review
+      - approval_policy
+      - long_running_agent
+    actions:
+      - consume_inputs
+      - extract_signals
+      - match_existing_hypotheses
+      - improve_existing_hypotheses
+      - generate_new_hypotheses
+      - update_evaluations
+      - update_validation_plans
+      - create_report
+    policy:
+      prefer_existing_hypotheses: true
+      create_new_hypothesis_only_if_distinct: true
+      require_evaluation_reason: true
+      require_counter_evidence: true
+      avoid_hypothesis_sprawl: true
+      max_new_hypotheses: 3
+      output_locale: user
+      require_original_url: true
+      require_spike_for_new_hypothesis: true
+      merge_or_park_weak_hypotheses: true
+    output:
+      report_path: kizashi/reports/{date}-kizashi-review.md
