@@ -3,12 +3,14 @@
 const fs = require("fs");
 const path = require("path");
 
-const sections = {
-  hypotheses: (name) => name.endsWith(".md"),
-  evaluations: (name) => name.endsWith(".eval.yaml"),
-  validations: (name) => name.endsWith(".plan.md"),
-  reports: (name) => name.endsWith(".md"),
-};
+const sections = [
+  { name: "signal", dirs: ["signal"], predicate: (name) => name.endsWith(".md") },
+  { name: "hypotheses", dirs: ["hypotheses"], predicate: (name) => name.endsWith(".md") },
+  { name: "evaluations", dirs: ["evaluations"], predicate: (name) => name.endsWith(".eval.yaml") },
+  { name: "validations", dirs: ["validations"], predicate: (name) => name.endsWith(".plan.md") },
+  { name: "review", dirs: ["review"], predicate: (name) => name.endsWith(".md") },
+  { name: "positioning", dirs: ["positioning"], predicate: (name) => name.endsWith(".md") },
+];
 
 function parseArgs(argv) {
   const args = { target: "." };
@@ -28,11 +30,16 @@ function parseArgs(argv) {
 
 function listMatchingFiles(dir, predicate) {
   if (!fs.existsSync(dir)) return [];
-  return fs
-    .readdirSync(dir, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && predicate(entry.name))
-    .map((entry) => path.join(dir, entry.name))
-    .sort();
+  const out = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      out.push(...listMatchingFiles(full, predicate));
+    } else if (predicate(entry.name)) {
+      out.push(full);
+    }
+  }
+  return out.sort();
 }
 
 function relativeFrom(base, target) {
@@ -50,9 +57,9 @@ function main() {
   }
 
   console.log(`Kizashi workspace: ${workspace}`);
-  for (const [section, predicate] of Object.entries(sections)) {
-    const files = listMatchingFiles(path.join(workspace, section), predicate);
-    console.log(`\n${section}: ${files.length}`);
+  for (const section of sections) {
+    const files = section.dirs.flatMap((dir) => listMatchingFiles(path.join(workspace, dir), section.predicate));
+    console.log(`\n${section.name}: ${files.length}`);
     for (const file of files.slice(0, 20)) {
       console.log(`- ${relativeFrom(workspace, file)}`);
     }

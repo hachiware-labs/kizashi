@@ -26,21 +26,32 @@ Ask your coding agent:
 Use $kizashi to initialize this project. Configure X bookmarks through kimi-webbridge and wiki-garden as sources.
 ```
 
-Then run a review:
+Then run the role-based layers:
 
 ```text
-Use $kizashi to run weekly_kizashi_review end to end. Prepare the source inventory, signals file, agent task, report seed, and log seed, then complete the semantic review. Improve existing hypotheses first, create at most three new hypotheses only when pain, user count, or business scale spikes, update evaluations, and write the report in my locale.
+Use $kizashi to run the signal layer end to end with `kizashi signal`. Prepare the source inventory, signals file, agent task, evidence patch seed, and log seed. Capture evidence patches only; do not edit hypotheses or evaluations.
+```
+
+```text
+Use $kizashi to create a new hypothesis with `kizashi hypo` or `kizashi hypothesize` when a signal is distinct from existing hypotheses.
+```
+
+```text
+Use $kizashi to run the review layer end to end with `kizashi review`. Reconcile evidence patches with existing hypotheses, update evaluations, decide continue/narrow/merge/park/split, create at most three new hypotheses only when pain, user count, or business scale spikes, and write the report in my locale.
+```
+
+```text
+Use $kizashi to run the positioning layer end to end with `kizashi positioning`. Review vendor encroachment, buyer, pricing, adoption unit, and the remaining external product wedge, then write the positioning report in my locale.
 ```
 
 ## What Kizashi Produces
 
 - `kizashi/inputs/`: source notes with original URLs
-- `kizashi/signals/`: deterministic URL, heading, and bullet signal indexes
-- `kizashi/runs/`: run README, `AGENT_TASK.md`, and manifest files
+- `kizashi/signal/`: signal evidence patches and helper files
+- `kizashi/review/`: hypothesis review output and helper files
+- `kizashi/positioning/`: positioning output and helper files
 - `kizashi/hypotheses/`: testable problem hypotheses
 - `kizashi/evaluations/`: scores, evidence, counter-evidence, and recommendations
-- `kizashi/reports/`: periodic reviews
-- `kizashi/logs/`: short daily logs
 
 ## Helper CLI
 
@@ -48,7 +59,11 @@ The CLI is bundled as a helper inside the skill. It is useful for deterministic 
 
 ```bash
 node bin/kizashi.js init --target .
-node bin/kizashi.js run weekly_kizashi_review --target .
+node bin/kizashi.js signal --target .
+node bin/kizashi.js hypo --target . --slug agent-workspace-orchestration --title "Agent Workspace Orchestration"
+# or: node bin/kizashi.js hypothesize --target . --slug agent-workspace-orchestration --title "Agent Workspace Orchestration"
+node bin/kizashi.js review --target .
+node bin/kizashi.js positioning --target .
 node bin/kizashi.js hypotheses list --target .
 node bin/kizashi.js summarize --target .
 ```

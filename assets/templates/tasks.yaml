@@ -1,8 +1,12 @@
 tasks:
-  - id: daily_kizashi_log
-    name: Daily Kizashi Log
-    mode: daily_log
-    cadence: daily
+  - id: signal_capture
+    name: Signal Capture
+    layer: signal
+    position: evidence_intake_layer
+    mode: evidence_capture
+    cadence: per_source_batch
+    command: kizashi signal
+    purpose: Capture source signals as small evidence patches without rewriting hypotheses.
     sources:
       - x_bookmarks
       - wiki_garden
@@ -10,22 +14,30 @@ tasks:
       - consume_inputs
       - extract_signals
       - match_existing_hypotheses
-      - improve_existing_hypotheses
-      - update_evaluations_if_needed
+      - create_evidence_patches
       - create_short_log
     policy:
-      prefer_existing_hypotheses: true
-      create_new_hypothesis_only_if_distinct: true
+      append_only_evidence: true
+      do_not_edit_hypotheses: true
+      do_not_update_evaluations: true
+      create_new_hypotheses: false
       keep_log_short: true
       output_locale: user
       require_original_url: true
-      require_spike_for_new_hypothesis: true
+    output:
+      evidence_patch_path: kizashi/signal/{date}.md
+      log_path: kizashi/signal/{date}.log.md
 
-  - id: weekly_kizashi_review
-    name: Weekly Kizashi Review
-    mode: periodic_review
-    cadence: weekly
+  - id: hypothesis_review
+    name: Hypothesis Review
+    layer: review
+    position: hypothesis_governance_layer
+    mode: hypothesis_review
+    cadence: regular_or_triggered
+    command: kizashi review
+    purpose: Reconcile evidence patches with hypotheses, scores, decisions, and next experiments.
     sources:
+      - evidence_patches
       - x_bookmarks
       - wiki_garden
       - release_notes
@@ -38,12 +50,12 @@ tasks:
       - approval_policy
       - long_running_agent
     actions:
-      - consume_inputs
+      - consume_evidence_patches
       - extract_signals
       - match_existing_hypotheses
-      - improve_existing_hypotheses
-      - generate_new_hypotheses
+      - update_existing_hypotheses
       - update_evaluations
+      - decide_continue_narrow_merge_park_split
       - update_validation_plans
       - create_report
     policy:
@@ -57,5 +69,43 @@ tasks:
       require_original_url: true
       require_spike_for_new_hypothesis: true
       merge_or_park_weak_hypotheses: true
+      trigger_review_if:
+        strength_gte: 4
+        novelty_gte: 4
+        counter_evidence_strength_gte: 4
+        evidence_patch_count_gte: 10
     output:
-      report_path: kizashi/reports/{date}-kizashi-review.md
+      report_path: kizashi/review/{date}.md
+      log_path: kizashi/review/{date}.log.md
+
+  - id: market_positioning
+    name: Market Positioning
+    layer: positioning
+    position: strategy_layer
+    mode: market_positioning
+    cadence: strategic_or_market_shift
+    command: kizashi positioning
+    purpose: Reassess market room, vendor encroachment, buyer, pricing, and adoption unit.
+    sources:
+      - evidence_patches
+      - wiki_garden
+      - release_notes
+      - github_signals
+      - articles
+    actions:
+      - consume_evidence_patches
+      - review_competitive_signals
+      - assess_vendor_encroachment
+      - reassess_buyer_pricing_adoption_unit
+      - identify_external_product_wedge
+      - update_positioning_recommendations
+      - create_positioning_report
+    policy:
+      do_not_create_hypotheses_by_default: true
+      require_external_product_wedge: true
+      require_competitive_counter_evidence: true
+      output_locale: user
+      require_original_url: true
+    output:
+      report_path: kizashi/positioning/{date}.md
+      log_path: kizashi/positioning/{date}.log.md

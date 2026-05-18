@@ -1,4 +1,13 @@
 sources:
+  - id: evidence_patches
+    name: Evidence Patches
+    type: local_artifact
+    description: Small append-only signal records created by the Signal Capture layer.
+    input_path: kizashi/signal/
+    expected_format: markdown
+    cadence: per_source_batch
+    role: evidence_patch
+
   - id: x_bookmarks
     name: X Bookmarks
     type: browser_session
@@ -36,6 +45,15 @@ sources:
     expected_format: markdown_or_yaml
     cadence: weekly
     role: external_signal
+
+  - id: articles
+    name: Technical and Market Articles
+    type: web_or_manual
+    description: Technical articles, competitive writeups, market notes, and pricing or adoption signals.
+    input_path: kizashi/inputs/articles/
+    expected_format: markdown
+    cadence: strategic_or_market_shift
+    role: market_signal
 
   - id: hatena_ai_trends
     name: Hatena Bookmark AI Trends

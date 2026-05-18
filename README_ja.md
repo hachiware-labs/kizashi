@@ -27,26 +27,39 @@ Kizashi Skillを使って、このプロジェクトに kizashi/ ディレクト
 Xブックマークは kimi-webbridge、wiki-garden は内部知識ソースとして設定してください。
 ```
 
-次に、レビューを依頼します。
+次に、時間名ではなく役割名で各階層を依頼します。
 
 ```text
-Kizashi Skillを使って、weekly_kizashi_review を一連で実行してください。
-ソース棚卸し、signalsファイル、エージェントタスク、レポート雛形、ログ雛形を作成し、
-その後、意味的レビューを完了してください。
-既存仮説を優先して改善し、Pain、ユーザー数、ビジネス規模のいずれかが突き抜けている場合だけ、
-最大3件まで新規仮説を作成してください。
-評価を更新し、レポートは私のロケールに合わせて作成してください。
+Kizashi Skillを使って、`kizashi signal` で signal 階層を一連で実行してください。
+ソース棚卸し、signalsファイル、エージェントタスク、evidence patch雛形、ログ雛形を作成し、
+仮説や評価は書き換えず、根拠パッチだけを残してください。
+```
+
+```text
+既存仮説とは別の痛みが見つかったときだけ、`kizashi hypo` または `kizashi hypothesize` で新規仮説を作成してください。
+```
+
+```text
+Kizashi Skillを使って、`kizashi review` で review 階層を一連で実行してください。
+evidence patchを既存仮説に照合し、評価を更新し、
+continue / narrow / merge / park / split と next_experiment を判断してください。
+Pain、ユーザー数、ビジネス規模のいずれかが突き抜けている場合だけ、最大3件まで新規仮説を作成してください。
+```
+
+```text
+Kizashi Skillを使って、`kizashi positioning` で positioning 階層を一連で実行してください。
+vendor encroachment、buyer、pricing、adoption unit、外部productとして残る余白を見直し、
+ポジショニングレポートを私のロケールで作成してください。
 ```
 
 ## Kizashi が作成するもの
 
 - `kizashi/inputs/`: 一次情報URLつきの入力メモ
-- `kizashi/signals/`: URL・見出し・箇条書き候補の機械的なシグナル一覧
-- `kizashi/runs/`: run README、`AGENT_TASK.md`、manifest
+- `kizashi/signal/`: signal の evidence patch と補助ファイル
+- `kizashi/review/`: hypothesis review の出力と補助ファイル
+- `kizashi/positioning/`: positioning の出力と補助ファイル
 - `kizashi/hypotheses/`: 検証可能な課題仮説
 - `kizashi/evaluations/`: スコア、根拠、反証、推奨判断
-- `kizashi/reports/`: 定期レビュー
-- `kizashi/logs/`: 短い日次ログ
 
 ## 補助CLI
 
@@ -54,7 +67,11 @@ CLI は Skill に同梱される補助機能です。初期化や実行準備を
 
 ```bash
 node bin/kizashi.js init --target .
-node bin/kizashi.js run weekly_kizashi_review --target .
+node bin/kizashi.js signal --target .
+node bin/kizashi.js hypo --target . --slug agent-workspace-orchestration --title "Agent Workspace Orchestration"
+# or: node bin/kizashi.js hypothesize --target . --slug agent-workspace-orchestration --title "Agent Workspace Orchestration"
+node bin/kizashi.js review --target .
+node bin/kizashi.js positioning --target .
 node bin/kizashi.js hypotheses list --target .
 node bin/kizashi.js summarize --target .
 ```

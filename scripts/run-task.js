@@ -101,6 +101,23 @@ function getNestedScalar(block, parent, field) {
   return "";
 }
 
+function getNestedBlockScalar(block, parent, field) {
+  const lines = block.split(/\r?\n/);
+  let inParent = false;
+  for (const line of lines) {
+    if (new RegExp(`^\\s{4}${parent}:\\s*$`).test(line)) {
+      inParent = true;
+      continue;
+    }
+    if (inParent) {
+      const match = line.match(new RegExp(`^\\s{6}${field}:\\s*(.*)$`));
+      if (match) return unquote(match[1]);
+      if (/^\s{4}\S/.test(line)) break;
+    }
+  }
+  return "";
+}
+
 function parseSourcesFallback(content) {
   return {
     sources: splitRootArrayBlocks(content).map((block) => {
@@ -128,7 +145,7 @@ function parseTasksFallback(content) {
   return {
     tasks: splitRootArrayBlocks(content).map((block) => {
       const task = {};
-      for (const field of ["id", "name", "mode", "cadence"]) {
+      for (const field of ["id", "name", "layer", "position", "mode", "cadence", "command", "purpose"]) {
         const value = getScalar(block, field);
         if (value) task[field] = value;
       }
@@ -136,12 +153,23 @@ function parseTasksFallback(content) {
         const values = getList(block, field);
         if (values.length > 0) task[field] = values;
       }
-      const reportPath = getNestedScalar(block, "output", "report_path");
-      if (reportPath) task.output = { report_path: reportPath };
+      const output = {};
+      for (const field of ["report_path", "log_path", "evidence_patch_path"]) {
+        const value = getNestedBlockScalar(block, "output", field);
+        if (value) output[field] = value;
+      }
+      if (Object.keys(output).length > 0) task.output = output;
       const policy = {};
       for (const field of [
         "prefer_existing_hypotheses",
         "create_new_hypothesis_only_if_distinct",
+        "append_only_evidence",
+        "do_not_edit_hypotheses",
+        "do_not_update_evaluations",
+        "create_new_hypotheses",
+        "do_not_create_hypotheses_by_default",
+        "require_external_product_wedge",
+        "require_competitive_counter_evidence",
         "require_evaluation_reason",
         "require_counter_evidence",
         "avoid_hypothesis_sprawl",
@@ -179,6 +207,16 @@ function replaceAll(content, replacements) {
     next = next.split(from).join(to);
   }
   return next;
+}
+
+function renderOutputPath(pattern, date, taskId, layer) {
+  return replaceAll(pattern, {
+    "{date}": date,
+    "{year}": date.slice(0, 4),
+    "{month}": date.slice(5, 7),
+    "{task}": slug(taskId),
+    "{layer}": slug(layer),
+  });
 }
 
 function ensureDir(dir) {
@@ -238,6 +276,77 @@ function unique(values) {
   return [...new Set(values.filter(Boolean))];
 }
 
+function taskLayer(task) {
+  if (task.layer) return slug(task.layer);
+  if (task.mode === "evidence_capture") return "signal";
+  if (task.mode === "market_positioning") return "positioning";
+  return "review";
+}
+
+function requiredWorkLines(task, maxNew) {
+  if (task.mode === "evidence_capture") {
+    return [
+      "1. Read the signals file and the original input files.",
+      "2. Extract concrete problem signals: observed behavior, complaints, workarounds, repeated patterns, missing capabilities, and tool changes.",
+      "3. Match each signal to an existing hypothesis when possible.",
+      "4. Write small evidence patches only; keep them source-grounded and include original URLs.",
+      "5. Do not edit hypothesis files, evaluation YAML, validation plans, or create new hypotheses in this layer.",
+      "6. Write a short log in the user's locale.",
+    ];
+  }
+  if (task.mode === "market_positioning") {
+    return [
+      "1. Read the signals file, evidence patches, and original market or competitive inputs.",
+      "2. Review vendor encroachment, buyer, pricing, adoption unit, and competitive counter-evidence.",
+      "3. Identify whether an external product wedge still remains for each prioritized hypothesis.",
+      "4. Update positioning recommendations and strategic next actions.",
+      "5. Do not create new hypotheses by default; request a hypothesis review pass if a new wedge appears.",
+      "6. Write the positioning report in the user's locale.",
+    ];
+  }
+  return [
+    "1. Read the signals file, evidence patches, and the original input files.",
+    "2. Extract concrete problem signals: observed behavior, complaints, workarounds, repeated patterns, missing capabilities, and tool changes.",
+    "3. Match every signal to existing hypotheses before creating new ones.",
+    "4. Improve existing hypotheses directly when the evidence strengthens, weakens, narrows, or falsifies them.",
+    `5. Create at most ${maxNew} new hypotheses, and only when pain depth, user count, or business scale clearly spikes.`,
+    "6. Update evaluations with reasons, counter-evidence, evidence URLs, score changes, and recommendations.",
+    "7. Decide for each reviewed hypothesis: continue, narrow, merge, park, or split.",
+    "8. Write or update validation plans only when the next step is research, interviews, queries, or an MVP experiment.",
+    "9. Write the review report and short log in the user's locale.",
+  ];
+}
+
+function qualityGateLines(task) {
+  const common = [
+    "- Record primary evidence with both `Source File` and `Original URL`.",
+    "- Explain uncertainty and the next evidence needed.",
+  ];
+  if (task.mode === "evidence_capture") {
+    return [
+      "- Keep Signal Capture append-only.",
+      "- Do not rewrite hypothesis or evaluation files.",
+      "- Use `related_hypothesis: none` only when no existing hypothesis is close.",
+      ...common,
+    ];
+  }
+  if (task.mode === "market_positioning") {
+    return [
+      "- Assess vendor encroachment explicitly.",
+      "- State buyer, pricing, adoption unit, and external product wedge.",
+      "- Do not create hypotheses by default.",
+      ...common,
+    ];
+  }
+  return [
+    "- Do not create broad hypotheses such as \"AI agents are hard\".",
+    "- Specify target user, trigger moment, concrete pain, workaround, and workaround failure.",
+    "- Explain whether each prioritized hypothesis is strong because of pain, user count, business scale, or a mix.",
+    "- Merge, park, or reject weak and duplicate hypotheses instead of letting the list grow.",
+    ...common,
+  ];
+}
+
 function cleanUrl(url) {
   return url.replace(/[),.;\]]+$/g, "");
 }
@@ -266,9 +375,14 @@ function extractBullets(content) {
 }
 
 function findTask(workspace, taskId) {
+  const aliases = {
+    hypothesis_calibration: "hypothesis_review",
+    review: "hypothesis_review",
+  };
+  const normalizedTaskId = aliases[taskId] || taskId;
   const tasksConfig = readYaml(path.join(workspace, "config", "tasks.yaml"));
   const tasks = tasksConfig?.tasks || [];
-  return tasks.find((task) => task.id === taskId) || { id: taskId, sources: [], actions: [] };
+  return tasks.find((task) => task.id === normalizedTaskId) || { id: normalizedTaskId, sources: [], actions: [] };
 }
 
 function sourceById(workspace) {
@@ -284,9 +398,10 @@ function runTask(args) {
 
   const date = args.date || today();
   const task = findTask(workspace, args.task);
+  const layer = taskLayer(task);
+  const layerDir = path.join(workspace, layer);
   const sources = sourceById(workspace);
-  const runDir = path.join(workspace, "runs", `${date}-${slug(task.id)}`);
-  ensureDir(runDir);
+  ensureDir(layerDir);
 
   const selectedSources = (task.sources || []).map((id) => sources[id] || { id, input_path: "" });
   const sourceLines = selectedSources.map((source) => {
@@ -333,30 +448,36 @@ function runTask(args) {
     .filter((file) => file.endsWith(".eval.yaml"))
     .map((file) => relative(projectRoot, file));
 
-  const reportName = task.output?.report_path
-    ? task.output.report_path.replace("{date}", date)
-    : `kizashi/reports/${date}-kizashi-review.md`;
-  const reportFile = path.join(projectRoot, reportName);
-  const logFile = path.join(workspace, "logs", date.slice(0, 4), date.slice(5, 7), `${date}.md`);
-  const signalsFile = path.join(workspace, "signals", `${date}-${slug(task.id)}.signals.md`);
-  const agentTaskFile = path.join(runDir, "AGENT_TASK.md");
-  const manifestFile = path.join(runDir, "manifest.json");
+  const defaultReportPath =
+    task.mode === "evidence_capture"
+      ? ""
+      : task.mode === "market_positioning"
+        ? "kizashi/positioning/{date}.md"
+        : "kizashi/review/{date}.md";
+  const reportPattern = task.output?.report_path || defaultReportPath;
+  const reportFile = reportPattern ? path.join(projectRoot, renderOutputPath(reportPattern, date, task.id, layer)) : null;
+  const logPattern = task.output?.log_path || "kizashi/{layer}/{date}.log.md";
+  const logFile = logPattern ? path.join(projectRoot, renderOutputPath(logPattern, date, task.id, layer)) : null;
+  const evidencePatchPattern =
+    task.output?.evidence_patch_path || (task.mode === "evidence_capture" ? "kizashi/signal/{date}.md" : "");
+  const evidencePatchFile = evidencePatchPattern ? path.join(projectRoot, renderOutputPath(evidencePatchPattern, date, task.id, layer)) : null;
+  const signalsFile = path.join(layerDir, `${date}.signals.md`);
+  const agentTaskFile = path.join(layerDir, `${date}.task.md`);
+  const manifestFile = path.join(layerDir, `${date}.manifest.json`);
+  const runReadmeFile = path.join(layerDir, `${date}.run.md`);
 
   const sourceSummaryLines = sourceLines.map(
     ({ source, files }) => `${source.id}: ${source.input_path || "(no input_path)"} (${files.length} files)`,
   );
-  const generatedArtifacts = [
-    relative(projectRoot, signalsFile),
-    relative(projectRoot, agentTaskFile),
-    relative(projectRoot, manifestFile),
-    relative(projectRoot, reportFile),
-    relative(projectRoot, logFile),
-  ];
+  const generatedArtifacts = [signalsFile, agentTaskFile, manifestFile, runReadmeFile, evidencePatchFile, reportFile, logFile]
+    .filter(Boolean)
+    .map((file) => relative(projectRoot, file));
 
   const signalsContent = [
     `# Kizashi Signals: ${date} ${task.id}`,
     "",
-    "This file is generated by `kizashi run`. It is a deterministic source index, not a semantic conclusion.",
+    "This file is generated by a Kizashi layer command. It is a deterministic source index, not a semantic conclusion.",
+    `Layer command: \`${task.command || `kizashi ${layer}`}\``,
     "",
     section("Sources", sourceSummaryLines),
     section("Existing Hypotheses", hypotheses),
@@ -413,32 +534,22 @@ function runTask(args) {
     section("Existing Evaluations", evaluations),
     "## Required Work",
     "",
-    "1. Read the signals file and the original input files.",
-    "2. Extract concrete problem signals: observed behavior, complaints, workarounds, repeated patterns, missing capabilities, and tool changes.",
-    "3. Match every signal to existing hypotheses before creating new ones.",
-    "4. Improve existing hypotheses directly when the signal strengthens, weakens, narrows, or falsifies them.",
-    `5. Create at most ${maxNew} new hypotheses, and only when pain depth, user count, or business scale clearly spikes.`,
-    "6. Update evaluations with reasons, counter-evidence, evidence URLs, score changes, and recommendations.",
-    "7. Write or update validation plans only when the next step is research, interviews, queries, or an MVP experiment.",
-    "8. Write the report and short daily log in the user's locale.",
+    ...requiredWorkLines(task, maxNew),
     "",
     "## Output Contract",
     "",
-    `- Report: \`${relative(projectRoot, reportFile)}\``,
-    `- Log: \`${relative(projectRoot, logFile)}\``,
+    evidencePatchFile ? `- Evidence patch: \`${relative(projectRoot, evidencePatchFile)}\`` : "",
+    reportFile ? `- Report: \`${relative(projectRoot, reportFile)}\`` : "",
+    logFile ? `- Log: \`${relative(projectRoot, logFile)}\`` : "",
     "- Hypotheses: `kizashi/hypotheses/*.md`",
     "- Evaluations: `kizashi/evaluations/*.eval.yaml`",
     "- Validations when needed: `kizashi/validations/*.plan.md`",
     "",
     "## Quality Gates",
     "",
-    "- Do not create broad hypotheses such as \"AI agents are hard\".",
-    "- Specify target user, trigger moment, concrete pain, workaround, and workaround failure.",
-    "- Record primary evidence with both `Source File` and `Original URL`.",
-    "- Explain whether each prioritized hypothesis is strong because of pain, user count, business scale, or a mix.",
-    "- Merge, park, or reject weak and duplicate hypotheses instead of letting the list grow.",
+    ...qualityGateLines(task),
     "",
-  ].join("\n");
+  ].filter((line) => line !== "").join("\n");
 
   writeFile(agentTaskFile, agentTaskContent);
 
@@ -450,6 +561,7 @@ function runTask(args) {
         task: {
           id: task.id,
           name: task.name || task.id,
+          layer,
           mode: task.mode || null,
           actions: task.actions || [],
           policy: task.policy || {},
@@ -476,53 +588,88 @@ function runTask(args) {
     )}\n`,
   );
 
-  if (!fs.existsSync(reportFile)) {
+  if (evidencePatchFile && !fs.existsSync(evidencePatchFile)) {
+    writeFile(
+      evidencePatchFile,
+      replaceAll(readTemplate("evidence-patch.md"), {
+        "YYYY-MM-DD": date,
+        "<source id>": sourceLines.map(({ source }) => source.id).join(", ") || "none",
+        "<original URL>": "pending",
+        "<slug or none>": "pending",
+        "<short source-grounded note>": "Pending semantic extraction by the coding agent.",
+      }),
+    );
+  }
+
+  if (reportFile && !fs.existsSync(reportFile)) {
+    const isMarketPositioning = task.mode === "market_positioning";
     writeFile(
       reportFile,
       [
-        `# Kizashi Review: ${date}`,
+        `# ${isMarketPositioning ? "Kizashi Market Positioning" : "Kizashi Hypothesis Review"}: ${date}`,
         "",
         "Output Locale: user",
         "",
         "## Summary",
         "",
-        "Semantic review pending. Start from the prepared run task and signals file.",
+        "Review pending. Start from the prepared run task and signals file.",
         "",
         "## Prepared Run",
         "",
-        `- Run: \`${relative(projectRoot, runDir)}\``,
+        `- Run: \`${relative(projectRoot, runReadmeFile)}\``,
         `- Agent task: \`${relative(projectRoot, agentTaskFile)}\``,
         `- Signals: \`${relative(projectRoot, signalsFile)}\``,
         "",
         section("Sources Used", sourceSummaryLines),
         section("Input Files", inputSummaries.map((summary) => summary.path)),
-        "## New Signals",
-        "",
-        "- Pending semantic extraction by the coding agent.",
-        "",
-        "## Updated Hypotheses",
-        "",
-        "- Pending",
-        "",
-        "## New Hypotheses",
-        "",
-        "- Pending",
-        "",
-        "## Evaluation Changes",
-        "",
-        "- Pending",
-        "",
-        "## Hypothesis Control",
-        "",
-        "- Created:",
-        "- Merged:",
-        "- Parked:",
-        "- Primary spike:",
-        "",
-        "## Spike Assessment",
-        "",
-        "- Pending",
-        "",
+        ...(isMarketPositioning
+          ? [
+              "## Vendor Encroachment",
+              "",
+              "- Pending",
+              "",
+              "## Buyer And Pricing",
+              "",
+              "- Pending",
+              "",
+              "## Adoption Unit",
+              "",
+              "- Pending",
+              "",
+              "## External Product Wedge",
+              "",
+              "- Pending",
+              "",
+            ]
+          : [
+              "## New Signals",
+              "",
+              "- Pending semantic extraction by the coding agent.",
+              "",
+              "## Updated Hypotheses",
+              "",
+              "- Pending",
+              "",
+              "## New Hypotheses",
+              "",
+              "- Pending",
+              "",
+              "## Evaluation Changes",
+              "",
+              "- Pending",
+              "",
+              "## Hypothesis Control",
+              "",
+              "- Created:",
+              "- Merged:",
+              "- Parked:",
+              "- Primary spike:",
+              "",
+              "## Spike Assessment",
+              "",
+              "- Pending",
+              "",
+            ]),
         "## Recommended Actions",
         "",
         "- Complete `AGENT_TASK.md`.",
@@ -535,7 +682,7 @@ function runTask(args) {
     );
   }
 
-  if (!fs.existsSync(logFile)) {
+  if (logFile && !fs.existsSync(logFile)) {
     writeFile(
       logFile,
       [
@@ -573,7 +720,9 @@ function runTask(args) {
     "",
     section("Task", [
       `Name: ${task.name || task.id}`,
+      `Position: ${task.position || "unknown"}`,
       `Mode: ${task.mode || "unknown"}`,
+      `Command: ${task.command || `kizashi ${layer}`}`,
       `Actions: ${(task.actions || []).join(", ") || "none"}`,
     ]),
     section("Sources", sourceSummaryLines),
@@ -591,20 +740,17 @@ function runTask(args) {
     "## Remaining Agent Instructions",
     "",
     `- Start from \`${relative(projectRoot, agentTaskFile)}\`.`,
-    "- Extract concrete signals with Source File and Original URL.",
-    "- Match signals to existing hypotheses before creating new ones.",
-    "- Create new hypotheses only if distinct and spike_strength is strong.",
-    "- Update evaluations with reasons, counter-evidence, user_count, business_scale, and spike_strength.",
-    "- Write report and log in the user's locale.",
+    ...qualityGateLines(task),
     "",
   ].join("\n");
 
-  writeFile(path.join(runDir, "README.md"), runReadme);
-  console.log(runDir);
+  writeFile(runReadmeFile, runReadme);
+  console.log(runReadmeFile);
   console.log(signalsFile);
   console.log(agentTaskFile);
-  console.log(reportFile);
-  console.log(logFile);
+  if (evidencePatchFile) console.log(evidencePatchFile);
+  if (reportFile) console.log(reportFile);
+  if (logFile) console.log(logFile);
 }
 
 try {

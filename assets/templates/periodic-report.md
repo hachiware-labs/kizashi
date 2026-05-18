@@ -1,4 +1,4 @@
-# Kizashi Review: YYYY-MM-DD
+# Kizashi Hypothesis Review: YYYY-MM-DD
 
 Output Locale: <user locale>
 
@@ -40,6 +40,15 @@ Output Locale: <user locale>
 ## Recommended Actions
 
 - <Action>
+
+## Market Positioning Addendum
+
+Use these sections for `kizashi positioning` reports:
+
+- Vendor Encroachment:
+- Buyer And Pricing:
+- Adoption Unit:
+- External Product Wedge:
 
 ## Files Changed
 

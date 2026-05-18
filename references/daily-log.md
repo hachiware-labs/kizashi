@@ -1,6 +1,6 @@
-# Daily Log
+# Short Log
 
-Use this reference for `kizashi/logs/YYYY/MM/YYYY-MM-DD.md`.
+Use this reference for `kizashi/<layer>/YYYY-MM-DD.log.md`.
 
 ## Rules
 
@@ -8,9 +8,10 @@ Use this reference for `kizashi/logs/YYYY/MM/YYYY-MM-DD.md`.
 - Write only the change summary and next step.
 - Do not put long analysis in the log.
 - Link or name changed hypothesis, evaluation, validation, or report files.
-- Prefer updating existing hypotheses over adding new ones.
+- For Signal, link evidence patches and do not update hypotheses or evaluations.
+- For Hypothesis, summarize score and decision changes briefly.
 - Write in the user's locale.
-- If no new hypotheses were created because signals were merged, say so briefly.
+- If no new hypotheses were created because evidence was merged, say so briefly.
 
 ## Template
 

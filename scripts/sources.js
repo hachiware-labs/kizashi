@@ -45,7 +45,7 @@ Options for add/update:
   --provider <provider>
   --input-path <path>
   --expected-format <format>
-  --cadence <daily|weekly|monthly|manual>
+  --cadence <cadence-hint>
   --role <role>`);
 }
 

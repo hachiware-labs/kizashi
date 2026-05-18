@@ -71,6 +71,20 @@ function runNode(script, args) {
   process.exit(result.status || 0);
 }
 
+function runTask(taskId, args) {
+  const aliases = {
+    signal: "signal_capture",
+    review: "hypothesis_review",
+    hypothesis_calibration: "hypothesis_review",
+    hypothesis_review: "hypothesis_review",
+    positioning: "market_positioning",
+  };
+  const runArgs = [aliases[taskId] || taskId];
+  if (args.target) runArgs.push("--target", args.target);
+  if (args.date) runArgs.push("--date", args.date);
+  runNode("scripts/run-task.js", runArgs);
+}
+
 function replaceAll(content, replacements) {
   let next = content;
   for (const [from, to] of Object.entries(replacements)) {
@@ -104,20 +118,20 @@ function createEvaluation(args) {
 
 function createLog(args) {
   const date = args.date || today();
-  const [year, month] = date.split("-");
+  const layer = slugify(args.layer || "review");
   const content = replaceAll(readTemplate("daily-log.md"), {
     "YYYY-MM-DD": date,
   });
-  writeIfMissing(path.join(workspace(args), "logs", year, month, `${date}.md`), content);
+  writeIfMissing(path.join(workspace(args), layer, `${date}.log.md`), content);
 }
 
 function createReport(args) {
   const date = args.date || today();
-  const name = args.name || `${date}-kizashi-review`;
+  const name = args.name || date;
   const content = replaceAll(readTemplate("periodic-report.md"), {
     "YYYY-MM-DD": date,
   });
-  writeIfMissing(path.join(workspace(args), "reports", `${name}.md`), content);
+  writeIfMissing(path.join(workspace(args), "review", `${name}.md`), content);
 }
 
 function refine(args) {
@@ -132,13 +146,19 @@ function refine(args) {
 function usage() {
   console.log(`Usage:
   kizashi init [--target <project-root>] [--overwrite]
+  kizashi signal [--target <project-root>] [--date YYYY-MM-DD]
+  kizashi hypo --slug <slug> --title <title> [--target <project-root>]
+  kizashi hypothesize --slug <slug> --title <title> [--target <project-root>]
+  kizashi review [--target <project-root>] [--date YYYY-MM-DD]
+  kizashi positioning [--target <project-root>] [--date YYYY-MM-DD]
   kizashi sources <list|show|add|update> [options]
   kizashi hypotheses <list|show|critique|improve> [slug] [--target <project-root>]
   kizashi run <task-id> [--target <project-root>] [--date YYYY-MM-DD]
-  kizashi hypothesize --slug <slug> --title <title> [--target <project-root>]
+    task ids: signal_capture, hypothesis_review, market_positioning
+    legacy alias: hypothesis_calibration
   kizashi refine <hypothesis-file>
   kizashi evaluate --slug <slug> [--target <project-root>]
-  kizashi log [--target <project-root>] [--date YYYY-MM-DD]
+  kizashi log [--target <project-root>] [--date YYYY-MM-DD] [--layer <signal|review|positioning>]
   kizashi report [--target <project-root>] [--date YYYY-MM-DD]
   kizashi summarize [--target <project-root>]`);
 }
@@ -155,6 +175,12 @@ function main() {
 
   if (command === "init") {
     runNode("scripts/init-kizashi-project.js", rest);
+  } else if (command === "signal") {
+    runTask("signal_capture", args);
+  } else if (command === "review") {
+    runTask("hypothesis_review", args);
+  } else if (command === "positioning") {
+    runTask("market_positioning", args);
   } else if (command === "sources") {
     runNode("scripts/sources.js", rest);
   } else if (command === "hypotheses") {
@@ -162,11 +188,8 @@ function main() {
   } else if (command === "run") {
     const task = args._[1];
     if (!task) throw new Error("Usage: kizashi run <task-id>");
-    const runArgs = [task];
-    if (args.target) runArgs.push("--target", args.target);
-    if (args.date) runArgs.push("--date", args.date);
-    runNode("scripts/run-task.js", runArgs);
-  } else if (command === "hypothesize") {
+    runTask(task, args);
+  } else if (command === "hypo" || command === "hypothesize") {
     createHypothesis(args);
   } else if (command === "refine") {
     refine(args);
