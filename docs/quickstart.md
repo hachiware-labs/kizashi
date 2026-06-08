@@ -13,13 +13,18 @@ Use $kizashi to initialize this project. Configure X bookmarks through kimi-webb
 2. Collect source material.
 
 ```text
-Use $kizashi with kimi-webbridge connected to Brave. Collect my latest 20 X bookmarks and the latest AI trends from Hatena Bookmark, then save source notes under kizashi/inputs/ with original URLs.
+Use $kizashi with kimi-webbridge connected to Brave for X bookmarks and keyword search collection only.
+Collect X bookmarks and AI trends with original URLs and save source notes under kizashi/inputs/.
 ```
 
 3. Run Signal.
 
 ```text
-Use $kizashi to run the signal layer end to end with `kizashi signal`. Prepare source inventory, a signals file, an agent task, an evidence patch seed, and a log seed. Then capture source-grounded evidence patches only; do not edit hypotheses or evaluations.
+Use $kizashi to run non-X sources end to end with `kizashi signal`. Prepare source inventory, a signals file, an agent task, an evidence patch seed, and a log seed. Then capture source-grounded evidence patches only; do not edit hypotheses or evaluations.
+```
+
+```text
+After browser collection is ready, use $kizashi to run `kizashi signal-x` for X bookmarks and keyword search inputs.
 ```
 
 4. Create Hypothesis when needed.
@@ -64,6 +69,7 @@ node bin/kizashi.js init --target .
 node bin/kizashi.js sources list --target .
 node bin/kizashi.js sources update --target . --id x_bookmarks --type browser_session --provider kimi-webbridge
 node bin/kizashi.js signal --target .
+node bin/kizashi.js signal-x --target .
 node bin/kizashi.js hypo --target . --slug <slug> --title "<title>"
 # or: node bin/kizashi.js hypothesize --target . --slug <slug> --title "<title>"
 node bin/kizashi.js review --target .
@@ -75,7 +81,7 @@ node bin/kizashi.js hypotheses improve <slug> --target .
 node bin/kizashi.js summarize --target .
 ```
 
-`node bin/kizashi.js signal|review|positioning ...` prepares layer runs and writes `kizashi/<layer>/<date>.task.md` for the coding agent to complete. `node bin/kizashi.js hypo` and `node bin/kizashi.js hypothesize` create new files under `kizashi/hypotheses/`.
+`node bin/kizashi.js signal|signal-x|review|positioning ...` prepares layer runs and writes `kizashi/<layer>/<date>.task.md` for the coding agent to complete. `node bin/kizashi.js hypo` and `node bin/kizashi.js hypothesize` create new files under `kizashi/hypotheses/`.
 
 ## Quality Rules
 

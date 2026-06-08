@@ -24,15 +24,19 @@ npx skills add . --skill kizashi --agent codex -y
 
 ```text
 Kizashi Skillを使って、このプロジェクトに kizashi/ ディレクトリを初期化してください。
-Xブックマークは kimi-webbridge、wiki-garden は内部知識ソースとして設定してください。
+Xブックマークとキーワード検索はブラウザ経由で取得し、wiki-garden は内部知識ソースとして設定してください。
 ```
 
 次に、時間名ではなく役割名で各階層を依頼します。
 
 ```text
-Kizashi Skillを使って、`kizashi signal` で signal 階層を一連で実行してください。
+Kizashi Skillを使って、`kizashi signal` で X 非依存の signal 階層を一連で実行してください。
 ソース棚卸し、signalsファイル、エージェントタスク、evidence patch雛形、ログ雛形を作成し、
 仮説や評価は書き換えず、根拠パッチだけを残してください。
+```
+
+```text
+ブラウザで X ブックマークとキーワード検索結果を取得後、`kizashi signal-x` で X 系のみの signal を取り込みます。
 ```
 
 ```text
@@ -68,6 +72,7 @@ CLI は Skill に同梱される補助機能です。初期化や実行準備を
 ```bash
 node bin/kizashi.js init --target .
 node bin/kizashi.js signal --target .
+node bin/kizashi.js signal-x --target .
 node bin/kizashi.js hypo --target . --slug agent-workspace-orchestration --title "Agent Workspace Orchestration"
 # or: node bin/kizashi.js hypothesize --target . --slug agent-workspace-orchestration --title "Agent Workspace Orchestration"
 node bin/kizashi.js review --target .

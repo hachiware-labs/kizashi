@@ -1,0 +1,13 @@
+themes:
+  - id: ai_coding_agent
+    name: AI Coding Agent
+  - id: agent_memory
+    name: Agent Memory
+  - id: agent_handoff
+    name: Agent Handoff
+  - id: ai_pr_review
+    name: AI PR Review
+  - id: approval_policy
+    name: Approval Policy
+  - id: long_running_agent
+    name: Long Running Agent

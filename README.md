@@ -23,13 +23,17 @@ npx skills add . --skill kizashi --agent codex -y
 Ask your coding agent:
 
 ```text
-Use $kizashi to initialize this project. Configure X bookmarks through kimi-webbridge and wiki-garden as sources.
+Use $kizashi to initialize this project. Configure X bookmarks through kimi-webbridge and wiki-garden as sources, and keep X collection browser-only.
 ```
 
 Then run the role-based layers:
 
 ```text
-Use $kizashi to run the signal layer end to end with `kizashi signal`. Prepare the source inventory, signals file, agent task, evidence patch seed, and log seed. Capture evidence patches only; do not edit hypotheses or evaluations.
+Use $kizashi to run the non-X signal layer end to end with `kizashi signal`. Prepare the source inventory, signals file, agent task, evidence patch seed, and log seed. Capture evidence patches only; do not edit hypotheses or evaluations.
+```
+
+```text
+After browser-based X collection is ready, run `kizashi signal-x` to ingest only X bookmarks and keyword searches.
 ```
 
 ```text
@@ -60,6 +64,7 @@ The CLI is bundled as a helper inside the skill. It is useful for deterministic 
 ```bash
 node bin/kizashi.js init --target .
 node bin/kizashi.js signal --target .
+node bin/kizashi.js signal-x --target .
 node bin/kizashi.js hypo --target . --slug agent-workspace-orchestration --title "Agent Workspace Orchestration"
 # or: node bin/kizashi.js hypothesize --target . --slug agent-workspace-orchestration --title "Agent Workspace Orchestration"
 node bin/kizashi.js review --target .

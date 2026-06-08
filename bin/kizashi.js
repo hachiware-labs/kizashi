@@ -147,6 +147,7 @@ function usage() {
   console.log(`Usage:
   kizashi init [--target <project-root>] [--overwrite]
   kizashi signal [--target <project-root>] [--date YYYY-MM-DD]
+  kizashi signal-x [--target <project-root>] [--date YYYY-MM-DD]
   kizashi hypo --slug <slug> --title <title> [--target <project-root>]
   kizashi hypothesize --slug <slug> --title <title> [--target <project-root>]
   kizashi review [--target <project-root>] [--date YYYY-MM-DD]
@@ -154,7 +155,7 @@ function usage() {
   kizashi sources <list|show|add|update> [options]
   kizashi hypotheses <list|show|critique|improve> [slug] [--target <project-root>]
   kizashi run <task-id> [--target <project-root>] [--date YYYY-MM-DD]
-    task ids: signal_capture, hypothesis_review, market_positioning
+    task ids: signal_capture, signal_capture_x, hypothesis_review, market_positioning
     legacy alias: hypothesis_calibration
   kizashi refine <hypothesis-file>
   kizashi evaluate --slug <slug> [--target <project-root>]
@@ -177,6 +178,8 @@ function main() {
     runNode("scripts/init-kizashi-project.js", rest);
   } else if (command === "signal") {
     runTask("signal_capture", args);
+  } else if (command === "signal-x") {
+    runTask("signal_capture_x", args);
   } else if (command === "review") {
     runTask("hypothesis_review", args);
   } else if (command === "positioning") {
