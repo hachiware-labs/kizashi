@@ -33,7 +33,7 @@
 
 {{change_sign}}
 
-**周辺調査**
+**周辺調査・比較**
 
 {{surrounding_investigation}}
 
@@ -41,7 +41,7 @@
 
 {{confirmed_points}}
 
-**未確定・反証候補**
+**未確定・反証条件**
 
 {{uncertainty_or_counter_signals}}
 
@@ -90,17 +90,17 @@
 
 - 変更: {{hypothesis_change}}
 - 根拠: {{hypothesis_evidence}}
-- 反証: {{hypothesis_counter_evidence}}
+- 反証条件: {{hypothesis_counter_evidence}}
 - 判断: {{hypothesis_decision}}
 - 次に集める証拠: {{next_evidence}}
 
 ## 6. 次へのアイデア
 
-| アイデア | 重要性 |
-|---|---|
-| {{idea_1}} | {{why_it_matters_1}} |
-| {{idea_2}} | {{why_it_matters_2}} |
-| {{idea_3}} | {{why_it_matters_3}} |
+| アイデア | 重要性 | 最小検証・成否条件 |
+|---|---|---|
+| {{idea_1}} | {{why_it_matters_1}} | {{validation_conditions_1}} |
+| {{idea_2}} | {{why_it_matters_2}} | {{validation_conditions_2}} |
+| {{idea_3}} | {{why_it_matters_3}} | {{validation_conditions_3}} |
 
 ## 7. 編集後記：今後の展望
 
@@ -130,9 +130,10 @@ Kizashi Agent Notes:
 - Theme: include a dated theme in the form YYYY/M/Dのテーマ and explain the day's focus in the lead.
 - Summary: write exactly three useful summary bullets; do not leave generic filler.
 - Signals: normally include at least 3 signal cards. Each signal needs a Japanese title, 2 detailed context paragraphs, 2 pain points, change sign, past-report/knowledge connection, ソースファイル, 元URL, 関連レポート, 関連知識, 強度, and 新規性.
+- Signal surrounding investigation: for important signals, compare related sources instead of listing them. Name source-to-source differences, complementarity, contradictions, and remaining uncertainty; if no source supports deeper comparison, write the next source or condition to check.
 - Problem deepening: include at least 4 cards or equivalent sections, each with enough detail to explain the current problem, structure, failed workaround, or deeper question.
-- Hypothesis updates: include at least 2 updates unless no hypothesis changed; each hypothesis label, name, Change, Evidence, and Decision must be written in Japanese.
-- Next ideas: include at least 3 ideas. Idea names and 重要性 paragraphs must be written in Japanese; do not leave English labels such as Idea or Why Matters.
+- Hypothesis updates: include at least 2 updates unless no hypothesis changed; each hypothesis label, name, Change, Evidence, and Decision must be written in Japanese. 反証条件 must say which condition would weaken the hypothesis or make an external artifact, ledger, skill, or pipeline unnecessary.
+- Next ideas: include at least 3 ideas. Idea names and 重要性 paragraphs must be written in Japanese; do not leave English labels such as Idea or Why Matters. Each idea must name one concrete PR, skill candidate, UI artifact, source set, or user task for the smallest validation, with success conditions, failure conditions, and observed metrics.
 - Editor's note: include at least 5 paragraphs, roughly 15-20 lines of reading depth.
 - フィードバック: keep the fixed feedback section and explain how to send feedback to Kizashi.
 - No unresolved {{placeholders}} may remain in the final report.
@@ -145,6 +146,11 @@ Kizashi Agent Notes:
   - 判断可能性: 読者が次に何を見る/作る/検証するべきか分かるか。
   - 文章密度: 必須項目を埋めただけの説明になっていないか。
 - If editorial self-review is weak, revise once, then run structural validation again.
+- Decision-log depth review after editorial self-review:
+  - 周辺調査の厚み: 重要シグナルで source を列挙するだけでなく、公式 source 同士の差分、補完関係、矛盾、残る不確実性を書いているか。
+  - 反証候補の具体性: どの条件なら仮説が弱まるか、または外部 artifact / ledger / skill / pipeline が不要になるかが次の観測に使える粒度か。
+  - 次の検証の小ささ: artifact 名だけでなく、どの1 PR、どの1 skill candidate、どの1 UI artifact、どの1 source set、どの1 user task で試し、何を成功/失敗/指標として見るか。
+  - If weak, do not rewrite the whole report. Augment only surrounding investigation, falsification conditions, and next validation conditions once, then run structural validation again.
 - Preserve source URLs whenever available.
 - For important signals, perform scoped surrounding investigation before synthesis: related URLs, adjacent sources, official docs, past reports, existing wiki pages, and counter-signals.
 - For Japanese reports, use "内部メモ" only when no external URL exists.
