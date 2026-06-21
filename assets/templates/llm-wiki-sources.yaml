@@ -1,0 +1,61 @@
+sources:
+  - id: manual_notes
+    name: Manual Notes
+    type: manual_note
+    description: One-off ideas, pasted notes, and user-provided material that should be remembered for future reports and queries.
+    input_path: raw/notes/
+    expected_format: markdown
+    cadence: ad_hoc
+    role: internal_context
+    enabled: true
+
+  - id: daily_app_captures
+    name: Daily App Captures
+    type: computer_use
+    description: Read-only captures from visible browser tabs, X sessions, desktop apps, and document viewers used for Daily Reports.
+    input_path: raw/app-captures/
+    expected_format: markdown
+    cadence: daily_or_requested
+    role: daily_source
+    enabled: true
+
+  - id: user_feedback
+    name: User Feedback
+    type: feedback
+    description: User instructions and corrections addressed to Kizashi that should update the skill, report templates, source registry, or future knowledge behavior.
+    input_path: raw/feedback/
+    expected_format: markdown
+    cadence: ad_hoc
+    role: refinement_signal
+    enabled: true
+
+  - id: x_bookmarks
+    name: X Bookmarks
+    type: browser_session
+    description: User-selected X bookmarks or searches captured through a browser-capable skill when authorized by the user.
+    provider: kimi-webbridge_or_browser
+    input_path: raw/x-bookmarks/
+    expected_format: markdown_or_yaml
+    cadence: daily_or_requested
+    role: external_signal
+    enabled: false
+
+  - id: user_sites
+    name: User-Specified Sites
+    type: web_or_manual
+    description: Sites, product pages, documentation, release notes, and articles selected by the user as recurring or one-off sources.
+    input_path: raw/sites/
+    expected_format: markdown
+    cadence: requested_or_monitor
+    role: external_signal
+    enabled: true
+
+  - id: past_daily_reports
+    name: Past Daily Reports
+    type: internal_report
+    description: Prior Kizashi Daily Reports used as memory, contrast, and change-sign context for future reports.
+    input_path: reports/daily/
+    expected_format: markdown_or_html
+    cadence: every_report
+    role: accumulated_knowledge
+    enabled: true

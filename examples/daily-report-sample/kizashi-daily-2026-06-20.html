@@ -1,0 +1,1108 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kizashi Daily - 2026-06-20</title>
+    <style>
+      :root {
+        --ink: #0f172a;
+        --muted: #475569;
+        --soft: #64748b;
+        --line: #dbe3ef;
+        --paper: #ffffff;
+        --wash: #f8fafc;
+        --indigo: #4338ca;
+        --indigo-soft: #eef2ff;
+        --emerald: #047857;
+        --emerald-soft: #ecfdf5;
+        --amber: #b45309;
+        --amber-soft: #fffbeb;
+        --rose: #be123c;
+        --rose-soft: #fff1f2;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: #f1f5f9;
+        color: var(--ink);
+        font-family:
+          "Geist",
+          "Inter",
+          "Noto Sans JP",
+          "Hiragino Kaku Gothic ProN",
+          "Yu Gothic",
+          system-ui,
+          sans-serif;
+        line-height: 1.75;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .shell {
+        width: min(1180px, calc(100% - 32px));
+        margin: 32px auto;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        box-shadow: 0 28px 80px -56px rgba(15, 23, 42, 0.78);
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 18px 28px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(16px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 0;
+      }
+
+      .brand img {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        background: #fff;
+        object-fit: contain;
+      }
+
+      .brand strong,
+      .eyebrow {
+        display: block;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      .brand span {
+        display: block;
+        margin-top: 1px;
+        color: var(--indigo);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .date {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .hero {
+        position: relative;
+        min-height: 420px;
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 36px;
+        padding: 52px 56px;
+        overflow: hidden;
+        background:
+          linear-gradient(90deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.94) 46%, rgba(255, 255, 255, 0.78) 72%, rgba(255, 255, 255, 0.68) 100%),
+          url("https://hachiware-labs.com/images/hero/lab-building-with-sign.png") center right / cover no-repeat;
+      }
+
+      .hero-copy {
+        max-width: 660px;
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--indigo);
+      }
+
+      h1 {
+        margin: 18px 0 0;
+        font-size: 56px;
+        line-height: 1.08;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 600px;
+        margin: 22px 0 0;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 2;
+      }
+
+      .hero-panel {
+        align-self: end;
+        border: 1px solid rgba(219, 227, 239, 0.9);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 22px 60px -48px rgba(15, 23, 42, 0.78);
+        backdrop-filter: blur(18px);
+      }
+
+      .hero-panel h2 {
+        margin: 0;
+        padding: 22px 24px 10px;
+        font-size: 16px;
+        letter-spacing: 0;
+      }
+
+      .summary-list {
+        display: grid;
+        gap: 0;
+        margin: 0;
+        padding: 0 24px 20px;
+        list-style: none;
+      }
+
+      .summary-list li {
+        padding: 14px 0;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .report-overview {
+        padding: 28px 56px;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: #fff;
+      }
+
+      .overview-card {
+        display: grid;
+        grid-template-columns: minmax(220px, 0.75fr) 1.25fr;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        box-shadow: 0 18px 50px -46px rgba(15, 23, 42, 0.75);
+      }
+
+      .overview-copy {
+        padding: 22px 24px;
+        border-right: 1px solid var(--line);
+        background: var(--wash);
+      }
+
+      .overview-copy h2 {
+        margin: 0;
+        font-size: 20px;
+        letter-spacing: 0;
+      }
+
+      .overview-copy p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .metric {
+        padding: 22px 28px;
+        border-right: 1px solid var(--line);
+      }
+
+      .metric:last-child {
+        border-right: 0;
+      }
+
+      .metric span {
+        display: block;
+        color: var(--soft);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 4px;
+        font-size: 28px;
+        line-height: 1.15;
+      }
+
+      main {
+        padding: 48px 56px 56px;
+      }
+
+      .section {
+        margin-top: 56px;
+      }
+
+      .section:first-child {
+        margin-top: 0;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 22px;
+      }
+
+      .section h2 {
+        margin: 0;
+        font-size: 28px;
+        line-height: 1.3;
+        letter-spacing: 0;
+      }
+
+      .section-note {
+        max-width: 420px;
+        margin: 0;
+        color: var(--soft);
+        font-size: 13px;
+      }
+
+      .signal-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .signal-card,
+      .concept-card,
+      .hypothesis-card,
+      .draft {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 18px 50px -46px rgba(15, 23, 42, 0.75);
+      }
+
+      .signal-card {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .signal-top {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 12px;
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--line);
+        background: var(--wash);
+      }
+
+      .signal-id {
+        color: var(--soft);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        border-radius: 8px;
+        padding: 4px 9px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .tag.high {
+        background: var(--rose-soft);
+        color: var(--rose);
+      }
+
+      .tag.keep {
+        background: var(--emerald-soft);
+        color: var(--emerald);
+      }
+
+      .tag.publish {
+        background: var(--amber-soft);
+        color: var(--amber);
+      }
+
+      .signal-body {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: 18px;
+      }
+
+      .signal-body h3 {
+        margin: 0;
+        font-size: 22px;
+        line-height: 1.45;
+        letter-spacing: 0;
+      }
+
+      .signal-body p {
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .pain-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px 18px;
+        margin-top: 18px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+      }
+
+      .pain-point {
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--wash);
+      }
+
+      .pain-point b {
+        display: block;
+        color: var(--indigo);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .pain-point span {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.75;
+      }
+
+      .signal-context {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .context-note {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        background: #fff;
+      }
+
+      .context-note b {
+        display: block;
+        color: var(--indigo);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .context-note span {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.75;
+      }
+
+      .source {
+        margin-top: auto;
+        padding-top: 18px;
+        color: var(--soft);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .source dl {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 6px 12px;
+        margin: 0;
+      }
+
+      .source dt {
+        color: var(--soft);
+        font-weight: 800;
+      }
+
+      .source dd {
+        margin: 0;
+        color: var(--muted);
+        overflow-wrap: anywhere;
+      }
+
+      .concept-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .concept-card {
+        min-height: 0;
+        padding: 20px;
+      }
+
+      .concept-card b {
+        display: block;
+        color: var(--indigo);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .concept-card strong {
+        display: block;
+        margin-top: 12px;
+        font-size: 18px;
+        line-height: 1.45;
+      }
+
+      .concept-card span {
+        display: block;
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .hypothesis-board {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .hypothesis-card {
+        display: grid;
+        gap: 16px;
+        padding: 24px;
+      }
+
+      .hypothesis-label {
+        color: var(--indigo);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .hypothesis-card h3 {
+        margin: 0;
+        font-size: 22px;
+        line-height: 1.35;
+        letter-spacing: 0;
+      }
+
+      .hypothesis-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .hypothesis-meta {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        border-top: 1px solid var(--line);
+      }
+
+      .hypothesis-meta div {
+        padding: 14px 12px 0 0;
+      }
+
+      .hypothesis-meta span {
+        display: block;
+        color: var(--soft);
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .hypothesis-meta strong {
+        display: block;
+        margin-top: 3px;
+        font-size: 13px;
+      }
+
+      .action-queue {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 18px 50px -46px rgba(15, 23, 42, 0.75);
+      }
+
+      .action-row {
+        display: grid;
+        grid-template-columns: 0.75fr 1.25fr;
+        gap: 18px;
+        padding: 18px 20px;
+        border-top: 1px solid var(--line);
+        align-items: start;
+      }
+
+      .action-row:first-child {
+        border-top: 0;
+      }
+
+      .action-row.action-head {
+        background: var(--wash);
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .route {
+        display: inline-flex;
+        min-height: 28px;
+        align-items: center;
+        border-radius: 8px;
+        padding: 4px 9px;
+        background: var(--indigo-soft);
+        color: var(--indigo);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .action-main {
+        font-weight: 800;
+        line-height: 1.55;
+      }
+
+      .action-reason {
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.85;
+      }
+
+      .mobile-label {
+        display: none;
+        margin-bottom: 4px;
+        color: var(--soft);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .draft-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .draft {
+        padding: 24px;
+        background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+      }
+
+      .feedback-note {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 22px 24px;
+        background: var(--indigo-soft);
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .feedback-note strong {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--ink);
+        font-size: 15px;
+      }
+
+      .draft p {
+        margin: 0 0 16px;
+        color: var(--ink);
+        font-size: 15px;
+      }
+
+      .signature {
+        margin-top: 22px;
+        color: var(--indigo);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        font-size: 14px;
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: var(--wash);
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 28px 56px;
+        background: #0f172a;
+        color: #e2e8f0;
+      }
+
+      .footer strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .footer span {
+        color: #94a3b8;
+        font-size: 12px;
+      }
+
+      @media (max-width: 980px) {
+        .hero,
+        .concept-grid,
+        .hypothesis-board,
+        .signal-grid,
+        .draft-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .overview-card {
+          grid-template-columns: 1fr;
+        }
+
+        .overview-copy {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .metrics {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .metric:nth-child(2) {
+          border-right: 0;
+        }
+
+        .metric:nth-child(-n + 2) {
+          border-bottom: 1px solid var(--line);
+        }
+
+        h1 {
+          font-size: 42px;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .shell {
+          width: 100%;
+          margin: 0;
+          border-left: 0;
+          border-right: 0;
+          border-radius: 0;
+        }
+
+        .topbar,
+        .hero,
+        .report-overview,
+        main,
+        .footer {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+
+        .topbar,
+        .section-head,
+        .footer {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .hero {
+          min-height: auto;
+          padding-top: 42px;
+          padding-bottom: 42px;
+        }
+
+        h1 {
+          font-size: 34px;
+        }
+
+        .lead {
+          font-size: 15px;
+        }
+
+        .metrics {
+          grid-template-columns: 1fr;
+        }
+
+        .metric {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .metric:last-child {
+          border-bottom: 0;
+        }
+
+        .hypothesis-meta,
+        .pain-list,
+        .signal-context,
+        .action-row {
+          grid-template-columns: 1fr;
+        }
+
+        .source dl {
+          grid-template-columns: 1fr;
+        }
+
+        .action-row.action-head {
+          display: none;
+        }
+
+        .mobile-label {
+          display: block;
+        }
+
+        th,
+        td {
+          padding: 12px;
+        }
+      }
+
+      @media print {
+        body {
+          background: #fff;
+        }
+
+        .shell {
+          width: 100%;
+          margin: 0;
+          border: 0;
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <article class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <img src="https://hachiware-labs.com/images/hero/hachiware-character.png" alt="" />
+          <div>
+            <strong>KIZASHI</strong>
+            <span>HACHIWARE LABS / DAILY SIGNAL</span>
+          </div>
+        </div>
+        <div class="date">2026.06.20 / Asia Tokyo</div>
+      </header>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">2026/6/20のテーマ</p>
+          <h1>AIエージェント作業の<br />再開点を見直す。</h1>
+          <p class="lead">
+            今日の焦点は、長時間タスクの停止理由、次の入力、未確認の判断が分散する問題。
+            Markdown知識ベースから、再開コストを下げるためのシグナルと次アクションを抽出する。
+          </p>
+        </div>
+        <aside class="hero-panel" aria-label="今日の3行要約">
+          <h2>今日の3行要約</h2>
+          <ul class="summary-list">
+            <li>AIエージェント活用の関心は、生成から運用、停止復帰、判断の継続へ移っている。</li>
+            <li>Markdown知識ベースには、毎日読み返されないことで失われる兆しが残っている。</li>
+            <li>今日の打ち手は、Kizashi Daily と agent session note の最小検証。</li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="report-overview" aria-label="本日のレポート">
+        <div class="overview-card">
+          <div class="overview-copy">
+            <p class="eyebrow">REPORT INDEX</p>
+            <h2>本日のレポート</h2>
+            <p>今日扱う材料の量と、読み進める章立ての目安です。</p>
+          </div>
+          <div class="metrics">
+            <div class="metric"><span>Signals</span><strong>3</strong></div>
+            <div class="metric"><span>Deepening Points</span><strong>4</strong></div>
+            <div class="metric"><span>Hypothesis Updates</span><strong>2</strong></div>
+            <div class="metric"><span>Next Ideas</span><strong>4</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <main>
+        <section class="section">
+          <div class="section-head">
+            <h2>シグナル</h2>
+            <p class="section-note">今日の材料から見えた変化。全ての5W1Hを並べるのではなく、課題理解に効くペインポイントだけを記録する。</p>
+          </div>
+          <div class="signal-grid">
+            <article class="signal-card">
+              <div class="signal-top">
+                <span class="signal-id">Signal 01</span>
+              </div>
+              <div class="signal-body">
+                <h3>長時間エージェント作業の再開点が曖昧になる</h3>
+                <p>複数のAIエージェントを使った開発では、1つの作業が数分で終わらず、調査、実装、レビュー、再実行、判断保留をまたいで長時間化する。作業が長くなるほど、どこで止まったのか、次に何を入力するべきか、どの判断がまだ未確認なのかが、チャットログ、作業ツリー、メモ、頭の中に分散する。</p>
+                <p>この問題は単なるメモ不足ではない。エージェントは大量のログを残すが、人間が翌日に読むべき「再開の要点」には変換しない。結果として、朝に作業を再開するとき、まず昨日の文脈を掘り起こす時間が必要になり、最初の入力が遅れる。</p>
+                <div class="pain-list">
+                  <div class="pain-point"><b>ペインポイント 1: 翌日の最初の入力が作れない</b><span>夜に止めた作業を翌朝再開するとき、ユーザーはまず昨日の文脈を読み直す必要がある。問題はログがないことではなく、次にCodexへ渡す一文、見るべきファイル、未確認判断が1箇所にまとまっていないこと。</span></div>
+                  <div class="pain-point"><b>ペインポイント 2: 停止理由が判断材料として残らない</b><span>エージェントが止まった理由、失敗した試行、保留した判断が時系列ログの中に埋もれる。あとで見ると「なぜここで止めたのか」が分からず、同じ調査や迷いを繰り返しやすい。</span></div>
+                </div>
+                <div class="signal-context">
+                  <div class="context-note"><b>変化の兆し</b><span>AIエージェント活用の関心が「生成できるか」から「長時間作業をどう再開し、判断を維持するか」へ移りつつある。</span></div>
+                  <div class="context-note"><b>過去レポートとの接続</b><span>`2026-06-18-kizashi-daily.md` の「知識ベースが読まれない」問題が、今日は「作業再開時に判断が戻らない」問題として具体化している。</span></div>
+                </div>
+                <div class="source">
+                  <dl>
+                    <dt>Source File</dt><dd>llm-wiki/agent-workspace.md</dd>
+                    <dt>Original URL</dt><dd>internal note</dd>
+                    <dt>Related Report</dt><dd>reports/daily/2026-06-18-kizashi-daily.md</dd>
+                    <dt>Strength</dt><dd>High / Novelty: Medium</dd>
+                  </dl>
+                </div>
+              </div>
+            </article>
+
+            <article class="signal-card">
+              <div class="signal-top">
+                <span class="signal-id">Signal 02</span>
+              </div>
+              <div class="signal-body">
+                <h3>知識ベースは増えるが、毎日読まれる形になっていない</h3>
+                <p>LLM Wiki や Markdown メモは、調査が進むほど増えていく。だが、蓄積されたメモは保管場所としては機能しても、毎日の判断に戻ってくるとは限らない。重要な発見、保留した仮説、あとで読み返すべき違和感が、日付の古いメモやフォルダの奥に沈む。</p>
+                <p>ここで起きているのは、情報量の不足ではなく、視界への再配置の不足である。ユーザーはメモを書いているし、材料も残している。それでも翌日に読むべき形へ変換されなければ、知識ベースは「育っているが使われない」状態になる。</p>
+                <div class="pain-list">
+                  <div class="pain-point"><b>ペインポイント 1: メモはあるのに今日の判断へ戻らない</b><span>`notes/` や `llm-wiki/` には材料が残っているが、翌日に読むべき順番へ再編集されていない。結果として、重要な兆しや仮説の種が保存済みなのに使われない。</span></div>
+                  <div class="pain-point"><b>ペインポイント 2: 保存単位と読む単位がずれている</b><span>Markdownメモは蓄積には向いているが、日次判断には粒度が細かすぎる。ユーザーが必要としているのは、フォルダ横断で今日見るべきテーマ、深掘りすべき課題、更新された仮説をまとめた視界。</span></div>
+                </div>
+                <div class="signal-context">
+                  <div class="context-note"><b>変化の兆し</b><span>単なる「メモ整理」ではなく、日々の知識をプロダクト判断へ戻す仕組みそのものが必要になっている。</span></div>
+                  <div class="context-note"><b>過去レポートとの接続</b><span>`2026-06-19-kizashi-daily.md` の「Markdown知識ベースを毎日読む」論点が、今日は「読む単位を再編集する」課題へ深まっている。</span></div>
+                </div>
+                <div class="source">
+                  <dl>
+                    <dt>Source File</dt><dd>notes/research-loop.md</dd>
+                    <dt>Original URL</dt><dd>internal note</dd>
+                    <dt>Related Report</dt><dd>reports/daily/2026-06-19-kizashi-daily.md</dd>
+                    <dt>Strength</dt><dd>High / Novelty: High</dd>
+                  </dl>
+                </div>
+              </div>
+            </article>
+
+            <article class="signal-card">
+              <div class="signal-top">
+                <span class="signal-id">Signal 03</span>
+              </div>
+              <div class="signal-body">
+                <h3>外部発信の材料はあるが、投稿単位に変換されていない</h3>
+                <p>Hachiware Labs のプロダクト群には、観測、停止復帰、監視、実行、改善という共通の流れがある。だが、この流れは内部メモの中では見えていても、外部に伝わる短い言葉にはまだ変換されていない。発信材料はあるのに、投稿や記事の単位に切り出されていない状態で止まっている。</p>
+                <p>これは広報の問題というより、概念生成の途中段階の問題である。新しい概念は、最初から完成した名前や説明を持たない。日々のレポートで「今日の言い方」「今日の仮説」「今日の違和感」を残すことで、外部に出せる表現へ少しずつ育つ。</p>
+                <div class="pain-list">
+                  <div class="pain-point"><b>ペインポイント 1: 内部では分かるが外部には伝わらない</b><span>Hachiware Labs の中では、観測、停止復帰、監視、実行、改善という流れが見えている。しかし外部読者にとっては、その文脈や具体例がないため、何が新しい概念なのかが伝わりにくい。</span></div>
+                  <div class="pain-point"><b>ペインポイント 2: 発信が一度きりの作業になる</b><span>新しい概念は、1回の投稿下書きでは固まらない。日次レポートの中で、その日の言い方、その日の違和感、その日の仮説を積み上げないと、外部に出せる表現へ育ちにくい。</span></div>
+                </div>
+                <div class="signal-context">
+                  <div class="context-note"><b>変化の兆し</b><span>発信は完成した成果を告知する作業ではなく、概念を育てるための反復的な検証手段として扱う必要が出ている。</span></div>
+                  <div class="context-note"><b>過去レポートとの接続</b><span>`2026-06-17-kizashi-daily.md` の「外部発信候補」メモが、今日は「概念生成の反復」として位置づけ直されている。</span></div>
+                </div>
+                <div class="source">
+                  <dl>
+                    <dt>Source File</dt><dd>docs/hachiware-product-notes.md</dd>
+                    <dt>Original URL</dt><dd>https://hachiware-labs.com/</dd>
+                    <dt>Related Report</dt><dd>reports/daily/2026-06-17-kizashi-daily.md</dd>
+                    <dt>Strength</dt><dd>Medium / Novelty: Medium</dd>
+                  </dl>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2>課題の深化</h2>
+            <p class="section-note">現在とらえている課題を、発生場面、構造、失敗する回避策、深める問いに分けて掘り下げる。</p>
+          </div>
+          <div class="concept-grid">
+            <article class="concept-card">
+              <b>Current Problem</b>
+              <strong>再開点が散らばる</strong>
+              <span>長時間タスクでは、停止理由、次の入力、未確認判断がチャット、メモ、作業ツリーに分散する。特にAIエージェント作業では、作業ログが長く、実行中の判断が細かく枝分かれするため、翌日に「どこから始めるか」を人間が再構成する必要がある。これは開発速度だけでなく、判断の継続性にも影響する。</span>
+            </article>
+            <article class="concept-card">
+              <b>Structure</b>
+              <strong>作業状態が成果物化されない</strong>
+              <span>エージェントは多くのログを残すが、そのログは「実行の記録」であり「再開のための成果物」ではない。人間に必要なのは、最後に何を試したか、なぜ止めたか、次に何を渡すべきか、どの判断が未確定かである。この形に変換されていないため、知識はあるのに使いにくい。</span>
+            </article>
+            <article class="concept-card">
+              <b>Weak Workaround</b>
+              <strong>手動メモだけでは続かない</strong>
+              <span>手動で作業メモを整える方法は、最初は機能する。しかし、疲れている日、複数タスクが並行している日、エージェントの実行が長引いた日ほど抜け落ちる。問題は、メモの習慣がないことではなく、毎回人間が整形コストを払う構造にある。AI側で下書き化し、人間は確認と修正だけにしたい。</span>
+            </article>
+            <article class="concept-card">
+              <b>Deeper Question</b>
+              <strong>何を残すと再開できるか</strong>
+              <span>全文ログを残せば安心に見えるが、翌日の再開には長すぎる。逆に短すぎる要約では、なぜその判断になったのかが分からない。Kizashi が深めるべき問いは、どの粒度なら人間がすぐ作業を再開できるかである。次に読むべき判断、保留、未検証仮説、最初の入力文が揃えば十分かを検証したい。</span>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2>仮説の更新</h2>
+            <p class="section-note">昨日までの見立てをそのまま使わず、今日のシグナルで強まった点、狭める点、次に確かめる点を明示する。</p>
+          </div>
+          <div class="hypothesis-board">
+            <article class="hypothesis-card">
+              <div class="hypothesis-label">Updated Hypothesis A</div>
+              <h3>Daily report は知識整理より再開支援で刺さる</h3>
+              <p>単にMarkdown知識ベースを要約するより、止まったエージェント作業を翌日に再開するための判断紙面として出す方が、痛みが具体的になる。</p>
+              <div class="hypothesis-meta">
+                <div>
+                  <span>Change</span>
+                  <strong>Focus narrowed</strong>
+                </div>
+                <div>
+                  <span>Evidence</span>
+                  <strong>Signal 01 + 02</strong>
+                </div>
+                <div>
+                  <span>Decision</span>
+                  <strong>Continue</strong>
+                </div>
+              </div>
+            </article>
+            <article class="hypothesis-card">
+              <div class="hypothesis-label">Updated Hypothesis B</div>
+              <h3>Human-on-the-loop 欄が継続利用の鍵になる</h3>
+              <p>AIがレポートを作るだけでは足りない。Keep / Watch / Task / Publish の判断欄があることで、人間が外側から流れを制御できる。</p>
+              <div class="hypothesis-meta">
+                <div>
+                  <span>Change</span>
+                  <strong>Strengthened</strong>
+                </div>
+                <div>
+                  <span>Evidence</span>
+                  <strong>Signal 02 + 03</strong>
+                </div>
+                <div>
+                  <span>Decision</span>
+                  <strong>Prototype</strong>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2>次へのアイデア</h2>
+            <p class="section-note">すぐ実行するタスクだけでなく、検証、プロダクト、発信に展開できる小さなアイデアとして残す。</p>
+          </div>
+          <div class="action-queue">
+            <div class="action-row action-head">
+              <div>Idea</div>
+              <div>Why It Matters</div>
+            </div>
+            <div class="action-row">
+              <div class="action-main">
+                <span class="mobile-label">Idea</span>
+                3日連続で Kizashi Daily を作り、翌日の再開に使ったかを見る
+              </div>
+              <div class="action-reason">
+                <span class="mobile-label">Why It Matters</span>
+                3日連続で同じ型のレポートを作ると、単発の見栄えではなく、翌日の作業に本当に使えるかを確認できる。1日目は新鮮に読めても、2日目以降に読まれなければ習慣にはならない。特に見るべき点は、レポートを開いたあと最初の作業入力が早くなるか、保留判断を思い出せるか、次に見るファイルへ迷わず移れるかである。ここが成立すれば、Kizashi は要約ツールではなく再開支援ツールとして説明できる。
+              </div>
+            </div>
+            <div class="action-row">
+              <div class="action-main">
+                <span class="mobile-label">Idea</span>
+                レポート末尾に `Resume Brief` を追加する
+              </div>
+              <div class="action-reason">
+                <span class="mobile-label">Why It Matters</span>
+                `Resume Brief` は、日次レポートを読んだあとにすぐ行動へ移るための橋になる。内容は長くなくてよいが、次にCodexへ渡す一文、昨日止めた理由、未確認の判断、関連ファイルが揃っている必要がある。これがあると、ユーザーはレポートを読むだけで終わらず、次の入力まで進める。Kizashi のレポート価値を、読後の行動に接続する部品として優先度が高い。
+              </div>
+            </div>
+            <div class="action-row">
+              <div class="action-main">
+                <span class="mobile-label">Idea</span>
+                「メモは増えるだけでは資産にならない」を短い投稿にする
+              </div>
+              <div class="action-reason">
+                <span class="mobile-label">Why It Matters</span>
+                Kizashi の価値は、知識管理そのものではなく、知識を毎日の視界へ戻すことにある。この違いは外部に説明しないと伝わりにくい。短い投稿として出すことで、同じ痛みを持つ人がいるか、どの言い方が刺さるかを確認できる。発信は宣伝ではなく、概念の言語化テストとして扱う。反応があれば、レポートの構成やREADMEの説明にも戻せる。
+              </div>
+            </div>
+            <div class="action-row">
+              <div class="action-main">
+                <span class="mobile-label">Idea</span>
+                他の開発者が作業再開時に何を読み返しているかを聞く
+              </div>
+              <div class="action-reason">
+                <span class="mobile-label">Why It Matters</span>
+                現在の仮説は、自分の開発体験から強く見えているが、他の開発者にも同じ摩擦があるかは確認が必要である。質問すべきなのは「AIエージェントを使っていますか」ではなく、「昨日の作業を今日再開するとき、何を読み返していますか」である。ここでチャットログ、Issue、メモ、Git diff などの実態が分かれば、Kizashi が読むべき入力と出すべき出力の粒度が決まる。
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2>編集後記：今後の展望</h2>
+            <p class="section-note">今日のレポートから見えた方向性を、次の観測テーマとして短く残す。</p>
+          </div>
+          <article class="draft">
+            <p>今日のレポートで見えてきたのは、Kizashi を「知識ベースの要約器」として説明すると少し弱い、ということだ。要約は便利だが、既に多くのツールができる。Kizashi が狙うべき価値は、蓄積されたMarkdownや作業ログを、翌日の判断と行動へ戻すことである。</p>
+            <p>特にAIエージェント時代の開発では、作業の途中状態が増える。エージェントは実装し、調査し、失敗し、再試行し、時には人間の判断待ちで止まる。その過程はログとして残るが、翌朝の人間がすぐ読める形にはなっていない。</p>
+            <p>だから、Kizashi Daily は単に「昨日のまとめ」を出すだけでは足りない。今日どこから始めるべきか、どの判断が保留されているか、どの仮説が強まったか、どの言葉なら外部に出せそうかまで含める必要がある。レポートは読み物であると同時に、作業再開のための操作盤である。</p>
+            <p>この観点で見ると、`Resume Brief` はかなり重要になる。レポートの最後に、次にCodexへ渡す一文、見るべきファイル、未確認判断、止めた理由がまとまっていれば、ユーザーは考え直す前に作業へ戻れる。Kizashi が毎日使われるかどうかは、この一歩目を軽くできるかにかかっている。</p>
+            <p>もう1つ重要なのは、発信アイデアを単なるSNS下書きとして扱わないことだ。新しい概念は、内部で考えているだけでは輪郭が固まらない。日次レポートの中で、その日の言い方、その日の違和感、その日の仮説を残していくことで、外部に伝わる言葉へ育っていく。</p>
+            <p>今後の展望としては、Kizashi Daily の型を「シグナル」「課題の深化」「仮説の更新」「次へのアイデア」「編集後記」に固定し、各セクションの情報量を十分に持たせたい。短い箇条書きだけでは、新しい概念の背景が伝わらない。読む人が状況を追体験できる厚みが必要である。</p>
+            <p>次回以降は、レポートを読んだ後に実際に何が変わったかを観測したい。最初の入力が早くなったか。保留判断を思い出せたか。外部に出せる言葉が増えたか。そこまで見えれば、Kizashi は単なるレポート生成ではなく、探索と実行をつなぐ日次の基盤として育てられる。</p>
+            <div class="signature">Observed by Kizashi</div>
+          </article>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2>Feedback</h2>
+            <p class="section-note">レポートの精度、構成、次に見たい観点を改善するための導線。</p>
+          </div>
+          <div class="feedback-note">
+            <strong>フィードバックがある場合</strong>
+            このレポートの観点、取り上げるシグナル、仮説の方向性、次へのアイデアに修正したい点がある場合は、Codex に「Kizashi Skill にフィードバックして」と依頼してください。次回以降の Kizashi Daily に反映するための改善メモとして扱います。
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div>
+          <strong>KIZASHI / HACHIWARE LABS</strong>
+          <span>Turns a growing Markdown knowledge base into daily signal reports.</span>
+        </div>
+        <span>Observe -> Decide -> Act</span>
+      </footer>
+    </article>
+  </body>
+</html>

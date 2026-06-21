@@ -1,92 +1,151 @@
 # Kizashi Quick Start
 
-Kizashi is a Vercel Skills skill. Install it through Vercel Skills, then use it through a coding agent first. Ask Codex or another coding agent to use `$kizashi`; the agent will read the skill, inspect the project, edit files, and use the bundled JavaScript scripts only when deterministic setup or inventory is useful.
+Kizashi is the Skill you ask when you want today's research, remembered notes, answers from past reports, or cleanup of accumulated knowledge. It runs on top of an llm-wiki folder, so you do not need to learn a command workflow. Ask Codex or another agent to use `$kizashi`; after the wiki folder and sources are configured, daily research and knowledge management happen through the agent.
 
-## Recommended Agent Workflow
+If the save folder or `sources.yaml` is missing, Kizashi setup is not complete yet. Configure the wiki folder and information sources first.
 
-1. Initialize the workspace.
+## Try It In 10 Minutes
 
-```text
-Use $kizashi to initialize this project. Configure X bookmarks through kimi-webbridge and wiki-garden as sources.
-```
-
-2. Collect source material.
+Start with one small win: choose a storage folder, add one source, and create the first report.
 
 ```text
-Use $kizashi with kimi-webbridge connected to Brave for X bookmarks and keyword search collection only.
-Collect X bookmarks and AI trends with original URLs and save source notes under kizashi/inputs/.
-```
-
-3. Run Signal.
-
-```text
-Use $kizashi to run non-X sources end to end with `kizashi signal`. Prepare source inventory, a signals file, an agent task, an evidence patch seed, and a log seed. Then capture source-grounded evidence patches only; do not edit hypotheses or evaluations.
+$kizashi set my llm-wiki folder to C:\Users\kitad\Documents\kizashi-wiki
 ```
 
 ```text
-After browser collection is ready, use $kizashi to run `kizashi signal-x` for X bookmarks and keyword search inputs.
+$kizashi add hachiware-labs.com as a daily research source
 ```
-
-4. Create Hypothesis when needed.
 
 ```text
-Use $kizashi to create a new hypothesis with `kizashi hypo` or `kizashi hypothesize` only when the signal is distinct from existing hypotheses.
+$kizashi make today's report
 ```
 
-5. Run Review.
+The report is saved under `<wiki-root>/reports/daily/`. After that, use `$kizashi remember ...` to add knowledge and `$kizashi research ...` or `$kizashi tell me ...` to answer from past reports and accumulated knowledge.
+
+## 1. Daily Research
+
+### 1. Choose the folder and source sites
+
+First choose the llm-wiki folder where Kizashi stores knowledge, then choose the information sources to watch. Sources can include websites, X bookmarks, technical articles, GitHub, local notes, and pages or apps visible in the user's browser or desktop. If you do not have concrete sources yet, the agent proposes starter sources from your interests and project context, then helps you choose the first set. Sources can always be added, updated, or disabled later.
 
 ```text
-Use $kizashi to run the review layer end to end with `kizashi review`. Reconcile evidence patches with existing hypotheses, update evaluations, decide continue/narrow/merge/park/split, create at most three new hypotheses only when pain, user count, or business scale spikes, and write the report in my locale.
+$kizashi set my llm-wiki folder to C:\Users\kitad\Documents\kizashi-wiki and add hachiware-labs.com plus X bookmarks as daily research sources
 ```
 
-6. Run Positioning when strategy needs review.
+If you do not have concrete sources yet:
 
 ```text
-Use $kizashi to run the positioning layer end to end with `kizashi positioning`. Review vendor encroachment, buyer, pricing, adoption unit, and the remaining external product wedge, then write the positioning report in my locale.
+$kizashi propose three daily source candidates from my interests and help me choose the first sources
 ```
 
-7. Inspect and improve hypotheses.
+Main locations created:
+
+- `<wiki-root>/SCHEMA.md`
+- `<wiki-root>/index.md`
+- `<wiki-root>/log.md`
+- `<wiki-root>/sources.yaml`
+- `<wiki-root>/raw/`
+- `<wiki-root>/concepts/`
+- `<wiki-root>/entities/`
+- `<wiki-root>/queries/`
+- `<wiki-root>/reports/daily/`
+
+`<wiki-root>/sources.yaml` is the source registry used by Daily Report, ingress / ingest, query, and lint.
+
+### 2. Use agent automations to create daily reports
+
+Use the automation feature of Codex or another agent to create a Kizashi Daily Report from the day's sources. Kizashi reads the configured sources and existing wiki knowledge, performs surrounding research for important signals, and saves the dated report back into the wiki.
 
 ```text
-Use $kizashi to list the current hypotheses. Then explain, critique, and improve agent-workspace-orchestration using the latest sources and primary evidence URLs.
+$kizashi make today's Daily Report from configured sources and llm-wiki knowledge. Deep-dive important signals and save the report into the wiki
 ```
 
-## What The Agent Produces
+Main locations written:
 
-- `kizashi/inputs/`: source notes with original URLs
-- `kizashi/signal/`: signal evidence patches and helper files
-- `kizashi/review/`: hypothesis review output and helper files
-- `kizashi/positioning/`: positioning output and helper files
-- `kizashi/hypotheses/`: testable problem hypotheses
-- `kizashi/evaluations/`: scoring, evidence, counter-evidence, and recommendations
+- Report: `<wiki-root>/reports/daily/YYYY-MM-DD.md`
+- Optional HTML report: `<wiki-root>/reports/daily/YYYY-MM-DD.html`
+- Computer Use captures from browser/app material: `<wiki-root>/raw/app-captures/`
+- Report index entry: `<wiki-root>/index.md`
+- Append-only log entry: `<wiki-root>/log.md`
 
-## Helper Commands
+Daily Reports live inside the wiki, so future query and future reports can search and connect them.
 
-The CLI is optional and bundled as a helper inside the skill. Use it when you or the agent need deterministic setup, inventory, or checks. It is not the primary Vercel Skills user interface.
+## 2. Use It As LLM Wiki
 
-```bash
-node bin/kizashi.js init --target .
-node bin/kizashi.js sources list --target .
-node bin/kizashi.js sources update --target . --id x_bookmarks --type browser_session --provider kimi-webbridge
-node bin/kizashi.js signal --target .
-node bin/kizashi.js signal-x --target .
-node bin/kizashi.js hypo --target . --slug <slug> --title "<title>"
-# or: node bin/kizashi.js hypothesize --target . --slug <slug> --title "<title>"
-node bin/kizashi.js review --target .
-node bin/kizashi.js positioning --target .
-node bin/kizashi.js hypotheses list --target .
-node bin/kizashi.js hypotheses show <slug> --target .
-node bin/kizashi.js hypotheses critique <slug> --target .
-node bin/kizashi.js hypotheses improve <slug> --target .
-node bin/kizashi.js summarize --target .
+### 3. Add knowledge (ingress / ingest)
+
+Add one-off ideas, URLs, notes, conversation insights, or observations that should become reusable knowledge. Kizashi stores the raw material first, then organizes it into wiki pages under `concepts/`, `entities/`, or `comparisons/` when that makes it easier to reuse.
+
+```text
+$kizashi remember that AI review findings should always keep evidence URLs
 ```
 
-`node bin/kizashi.js signal|signal-x|review|positioning ...` prepares layer runs and writes `kizashi/<layer>/<date>.task.md` for the coding agent to complete. `node bin/kizashi.js hypo` and `node bin/kizashi.js hypothesize` create new files under `kizashi/hypotheses/`.
+```text
+$kizashi remember that Cursor Background Agent should be tracked as a comparison point for async PR work
+```
 
-## Quality Rules
+Main locations written:
 
-- Prefer improving existing hypotheses over creating new ones.
-- Create a new hypothesis only when the user, trigger, pain, workaround failure, or market wedge is distinct.
-- Prioritize hypotheses where pain depth, user count, or business scale clearly spikes.
-- Record `Source File` and `Original URL` for primary evidence.
-- Write reports, logs, hypotheses, and evaluations in the user's locale.
+- Raw notes and URLs: `<wiki-root>/raw/notes/`, `<wiki-root>/raw/sites/`, `<wiki-root>/raw/articles/`
+- X bookmarks: `<wiki-root>/raw/x-bookmarks/`
+- Synthesized knowledge: `<wiki-root>/concepts/`, `<wiki-root>/entities/`, `<wiki-root>/comparisons/`
+- Append-only log entry: `<wiki-root>/log.md`
+
+### 4. Search knowledge (query)
+
+Ask questions over accumulated wiki knowledge, past reports, source URLs, and notes. Kizashi reads `SCHEMA.md`, `index.md`, `sources.yaml`, `log.md`, relevant wiki pages, and relevant daily reports before answering.
+
+```text
+$kizashi tell me the evaluation criteria for AI agents from past reports, including related reports and source URLs
+```
+
+```text
+$kizashi research Cursor Background Agent, prioritizing existing wiki pages and configured sources
+```
+
+When the answer should be reused, Kizashi can save it under `<wiki-root>/queries/`.
+
+## 3. Manage
+
+### 5. Organize knowledge (lint)
+
+Ask Kizashi to clean up accumulated knowledge. It can deduplicate weak notes, connect related reports, add missing source URLs, mark stale claims, and sharpen vague ideas into reusable concepts.
+
+```text
+$kizashi lint my llm-wiki. Clean up duplicates, weak evidence, disconnected reports, and missing source URLs
+```
+
+Main locations written:
+
+- Lint output: `<wiki-root>/outputs/lint/`
+- Updated wiki pages: `<wiki-root>/concepts/`, `<wiki-root>/entities/`, `<wiki-root>/comparisons/`
+- Append-only log entry: `<wiki-root>/log.md`
+
+### 6. Edit source sites
+
+Add, disable, or update the information sources used by Daily Report and query. Prefer disabling old sources instead of deleting them so source history remains traceable.
+
+```text
+$kizashi list my information sources
+```
+
+```text
+$kizashi add hachiware-labs.com as a Daily Report source and disable the old X bookmark source
+```
+
+Locations updated:
+
+- Source registry: `<wiki-root>/sources.yaml`
+- Append-only log entry: `<wiki-root>/log.md`
+
+## Minimal Storage Map
+
+- Daily Reports: `<wiki-root>/reports/daily/`
+- Computer Use captures: `<wiki-root>/raw/app-captures/`
+- One-off knowledge: `<wiki-root>/raw/`
+- Synthesized knowledge: `<wiki-root>/concepts/`, `<wiki-root>/entities/`, `<wiki-root>/comparisons/`
+- Saved query answers: `<wiki-root>/queries/`
+- Lint output: `<wiki-root>/outputs/lint/`
+- Source registry: `<wiki-root>/sources.yaml`
+
+Kizashi-specific hypothesis, Signal, Review, and Positioning helper state is saved under `<project-root>/kizashi/` only when needed. The canonical store for Daily Reports and llm-wiki knowledge is `<wiki-root>/`.

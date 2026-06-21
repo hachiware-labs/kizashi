@@ -1,103 +1,151 @@
 # Kizashi クイックスタート
 
-Kizashi は Vercel Skills でインストールして使う Skill です。ユーザーが npm コマンドを直接覚えて実行するよりも、コーディングエージェントに `$kizashi` を使った作業を依頼する形を基本にします。Codex などのエージェントが Skill を読み、プロジェクトを確認し、必要なファイルを編集し、初期化・一覧確認・実行準備などの決定的な作業だけ JavaScript スクリプトで補助します。
+Kizashi は、日々の情報ソースと llm-wiki の知識を使って、毎日のレポート、知識追加、検索、整理を行う Skill です。ユーザーは CLI の細かい手順を覚える必要はありません。Codex などの Agent に `$kizashi` を使うよう依頼し、最初に保存フォルダと情報ソースを決めたら、あとは日々の調査と知識管理を回します。
 
-## 推奨: エージェントに依頼する流れ
+保存フォルダまたは `sources.yaml` がない場合は、Kizashi の init が未完了です。その場合は、先に wiki フォルダと情報ソースを決めます。
 
-1. ワークスペースを初期化する。
+## まず10分で試す
 
-```text
-Kizashi Skillを使って、このプロジェクトに kizashi/ ディレクトリを初期化してください。
-Xブックマークは browser（kimi-webbridge）でのみ収集し、wiki-garden は内部知識ソースとして設定してください。
-```
-
-2. 情報ソースを収集する。
+最初の成功体験は、保存先を決め、ソースを1つ追加し、初回レポートを作ることです。
 
 ```text
-Kizashi Skillを使うために、kimi-webbridgeでBraveに接続してください。
-Xで直近ブックマーク20件の取得とXキーワード検索を browser で実施し、
-kizashi/inputs/ 以下に一次情報URLつきで保存してください。
-```
-
-3. Signal を実行する。
-
-```text
-Kizashi Skillを使って、`kizashi signal` で X 以外の signal 階層を一連で実行してください。
-ソース棚卸し、signalsファイル、エージェントタスク、evidence patch雛形、ログ雛形を作成し、
-仮説や評価は書き換えず、一次情報URLつきの evidence patch だけを残してください。
+$kizashi llm-wikiの保存先を C:\Users\kitad\Documents\kizashi-wiki にして
 ```
 
 ```text
-ブラウザ収集が済んだら、`kizashi signal-x` で X 系のみの signal を取り込みます。
+$kizashi hachiware-labs.comを毎日の調査ソースに追加して
 ```
-
-4. 必要なときだけ新規仮説を作る。
 
 ```text
-既存仮説とは別の痛みが見つかったときだけ、`kizashi hypo` または `kizashi hypothesize` で新規仮説を作成してください。
+$kizashi 今日のレポートを作って
 ```
 
-5. Review を実行する。
+レポートは `<wiki-root>/reports/daily/` に保存されます。以後、`$kizashi ...を覚えて` で知識を足し、`$kizashi ...を調べて` や `$kizashi ...を教えて` で過去レポートと知識を使えます。
+
+## 1. 日々の調査をする
+
+### 1. 最初にフォルダとソースサイトを決める
+
+ユーザーは、Kizashi が知識を保存する llm-wiki フォルダと、日々見る情報ソースを決めます。情報ソースには、サイト URL、X ブックマーク、技術記事、GitHub、ローカルメモ、ブラウザやアプリで開いている画面などを含められます。具体的なソースがまだない場合は、Agent がユーザーの関心やプロジェクトの文脈から候補を出し、対話しながら最初のソースを決めます。ソースは後からいつでも追加・無効化できます。
 
 ```text
-Kizashi Skillを使って、`kizashi review` で review 階層を一連で実行してください。
-evidence patchを既存仮説に照合し、評価を更新し、
-continue / narrow / merge / park / split と next_experiment を判断してください。
-Pain、ユーザー数、ビジネス規模のいずれかが突き抜けている場合だけ、最大3件まで新規仮説を作成してください。
+$kizashi llm-wikiの保存先を C:\Users\kitad\Documents\kizashi-wiki にして、hachiware-labs.com とXブックマークを毎日の調査ソースに設定して
 ```
 
-6. Positioning が必要なタイミングで実行する。
+まだ具体的なソースがない場合:
 
 ```text
-Kizashi Skillを使って、`kizashi positioning` で positioning 階層を一連で実行してください。
-vendor encroachment、buyer、pricing、adoption unit、外部productとして残る余白を見直し、
-ポジショニングレポートを私のロケールで作成してください。
+$kizashi 私の関心から、毎日見るべき情報ソース候補を3つ提案して。一緒に最初のソースを決めたい
 ```
 
-7. 仮説を確認・改善する。
+作成される主な場所:
+
+- `<wiki-root>/SCHEMA.md`
+- `<wiki-root>/index.md`
+- `<wiki-root>/log.md`
+- `<wiki-root>/sources.yaml`
+- `<wiki-root>/raw/`
+- `<wiki-root>/concepts/`
+- `<wiki-root>/entities/`
+- `<wiki-root>/queries/`
+- `<wiki-root>/reports/daily/`
+
+`<wiki-root>/sources.yaml` が、Daily Report、ingress / ingest、query、lint で使う情報ソース一覧です。
+
+### 2. Agent のオートメーションで日々のレポートを作成する
+
+ユーザーは、Codex など各 Agent のオートメーション機能を使って、毎日のソースから Kizashi Daily Report を作成させます。Kizashi は指定ソースと既存 wiki を読み、重要シグナルは元ソースだけでなく周辺情報も深掘りして、日付入りのレポートとして保存します。
 
 ```text
-Kizashi Skillを使って、現在の仮説一覧を出してください。
-その後、agent-workspace-orchestration の説明、批評、改善を、
-最新ソースと一次情報URLに基づいて実施してください。
+$kizashi 今日の情報ソースとllm-wikiの知識からDaily Reportを作って。重要シグナルは周辺調査もして、レポートをwikiに保存して
 ```
 
-## エージェントが作成・更新するもの
+保存される主な場所:
 
-- `kizashi/inputs/`: 一次情報URLつきの入力メモ
-- `kizashi/signal/`: signal の evidence patch と補助ファイル
-- `kizashi/review/`: hypothesis review の出力と補助ファイル
-- `kizashi/positioning/`: positioning の出力と補助ファイル
-- `kizashi/hypotheses/`: 検証可能な課題仮説
-- `kizashi/evaluations/`: スコア、根拠、反証、推奨判断
+- レポート: `<wiki-root>/reports/daily/YYYY-MM-DD.md`
+- HTML レポートを作る場合: `<wiki-root>/reports/daily/YYYY-MM-DD.html`
+- ブラウザやアプリ画面を Computer Use で取得した材料: `<wiki-root>/raw/app-captures/`
+- レポート索引: `<wiki-root>/index.md`
+- 追記ログ: `<wiki-root>/log.md`
 
-## 補助コマンド
+Daily Report は wiki 内に保存されるため、後日の query や次回レポートで検索・接続できます。
 
-CLI は Skill に同梱される補助機能です。初期化、一覧確認、実行準備、検証などを決定的に行いたいときに、ユーザーまたはエージェントが使います。Vercel Skills としての主な利用面は `$kizashi` を呼び出すエージェント操作です。
+## 2. llm-wiki として使う
 
-```bash
-node bin/kizashi.js init --target .
-node bin/kizashi.js sources list --target .
-node bin/kizashi.js sources update --target . --id x_bookmarks --type browser_session --provider kimi-webbridge
-node bin/kizashi.js signal --target .
-node bin/kizashi.js signal-x --target .
-node bin/kizashi.js hypo --target . --slug <slug> --title "<title>"
-# or: node bin/kizashi.js hypothesize --target . --slug <slug> --title "<title>"
-node bin/kizashi.js review --target .
-node bin/kizashi.js positioning --target .
-node bin/kizashi.js hypotheses list --target .
-node bin/kizashi.js hypotheses show <slug> --target .
-node bin/kizashi.js hypotheses critique <slug> --target .
-node bin/kizashi.js hypotheses improve <slug> --target .
-node bin/kizashi.js summarize --target .
+### 3. 知識を追加する（ingress / ingest）
+
+ユーザーは、単発で記憶したいネタ、URL、メモ、会話で出たアイデア、あとで参照したい観察を Kizashi に追加できます。Kizashi は raw ソースを保存し、必要に応じて `concepts/`、`entities/`、`comparisons/` などの wiki ページへ整理します。
+
+```text
+$kizashi AIレビューでは根拠URLを必ず残す、と覚えて
 ```
 
-`node bin/kizashi.js signal|signal-x|review|positioning ...` は階層実行の補助コマンドです。決定的に処理できる部分を先に実行し、`kizashi/<layer>/<date>.task.md` にエージェントが続ける作業をまとめます。`node bin/kizashi.js hypo` と `node bin/kizashi.js hypothesize` は `kizashi/hypotheses/` に新規仮説を作ります。
+```text
+$kizashi Cursor Background Agentは非同期PR作業の比較対象として追跡する、と覚えて
+```
 
-## 品質ルール
+保存される主な場所:
 
-- 新規仮説を増やすより、まず既存仮説を改善する。
-- ユーザー、発生タイミング、Pain、回避策の失敗、マーケットの切り口が明確に異なる場合だけ新規仮説を作る。
-- Pain の深さ、ユーザー数、ビジネス規模のどれかが突き抜けている仮説を優先する。
-- 一次根拠には `Source File` と `Original URL` を残す。
-- レポート、ログ、仮説、評価はユーザーのロケールに合わせる。
+- 一次メモや URL: `<wiki-root>/raw/notes/`、`<wiki-root>/raw/sites/`、`<wiki-root>/raw/articles/`
+- X ブックマーク: `<wiki-root>/raw/x-bookmarks/`
+- 整理済み知識: `<wiki-root>/concepts/`、`<wiki-root>/entities/`、`<wiki-root>/comparisons/`
+- 追記ログ: `<wiki-root>/log.md`
+
+### 4. 知識を検索する（query）
+
+ユーザーは、llm-wiki に蓄積した知識、過去レポート、ソース URL、メモを対象に質問できます。Kizashi は `SCHEMA.md`、`index.md`、`sources.yaml`、`log.md`、関連ページ、過去レポートを読んで回答します。
+
+```text
+$kizashi 過去レポートからAIエージェントの評価観点を教えて。関連レポートとソースURLも示して
+```
+
+```text
+$kizashi CursorのBackground Agentについて調べて。既存wikiと登録済みソースを優先して見て
+```
+
+必要に応じて、再利用したい回答は `<wiki-root>/queries/` に保存します。
+
+## 3. 管理する
+
+### 5. 知識を整理する（lint）
+
+ユーザーは、増えた知識を Kizashi に整理させます。重複メモ、弱い主張、ソース URL の欠落、つながっていない過去レポート、古くなった仮説を見直し、wiki を日々使いやすくします。
+
+```text
+$kizashi llm-wikiをlintして。重複、弱い根拠、未接続のレポート、足りないソースURLを整理して
+```
+
+保存される主な場所:
+
+- lint 出力: `<wiki-root>/outputs/lint/`
+- 更新された wiki ページ: `<wiki-root>/concepts/`、`<wiki-root>/entities/`、`<wiki-root>/comparisons/`
+- 追記ログ: `<wiki-root>/log.md`
+
+### 6. ソースサイトを編集する
+
+ユーザーは、Daily Report や query で使う情報ソースを追加、無効化、更新できます。削除よりも無効化を優先すると、あとから履歴を追いやすくなります。
+
+```text
+$kizashi 情報ソース一覧を見せて
+```
+
+```text
+$kizashi hachiware-labs.comをDaily Report用の情報ソースに追加して。使わなくなったXブックマークのソースは無効化して
+```
+
+更新される場所:
+
+- 情報ソース一覧: `<wiki-root>/sources.yaml`
+- 追記ログ: `<wiki-root>/log.md`
+
+## 保存先の最小まとめ
+
+- Daily Report: `<wiki-root>/reports/daily/`
+- Computer Use の取得材料: `<wiki-root>/raw/app-captures/`
+- 単発知識: `<wiki-root>/raw/`
+- 整理済み知識: `<wiki-root>/concepts/`、`<wiki-root>/entities/`、`<wiki-root>/comparisons/`
+- query の保存回答: `<wiki-root>/queries/`
+- lint 結果: `<wiki-root>/outputs/lint/`
+- 情報ソース一覧: `<wiki-root>/sources.yaml`
+
+Kizashi 固有の仮説検証や Signal / Review / Positioning の補助状態は、必要な場合だけ `<project-root>/kizashi/` に保存します。日々のレポートと llm-wiki の知識の正本は `<wiki-root>/` です。
