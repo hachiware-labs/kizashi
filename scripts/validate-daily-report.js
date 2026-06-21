@@ -69,20 +69,42 @@ function validateDailyReport(file, templateFile) {
 
   const requiredText = [
     "KIZASHI",
-    "REPORT INDEX",
+    "レポート索引",
     "本日のレポート",
     "シグナル",
     "課題の深化",
     "仮説の更新",
     "次へのアイデア",
     "編集後記",
-    "Feedback",
-    "Source File",
-    "Original URL",
+    "フィードバック",
+    "ソースファイル",
+    "元URL",
     "変化の兆し",
   ];
   for (const text of requiredText) {
     if (!reportText.includes(text)) failures.push(`missing required text: ${text}`);
+  }
+
+  if (/<html[^>]+lang="ja"/i.test(report)) {
+    const forbiddenJapaneseLabels = [
+      [/>Signal\s+\d+</, "use シグナル N instead of Signal N"],
+      [/>Updated Hypothesis\b/, "use 更新仮説 instead of Updated Hypothesis"],
+      [/>Idea</, "use アイデア instead of Idea"],
+      [/>Why(?: It)? Matters</, "use 重要性 instead of Why Matters"],
+      [/>Change</, "use 変更 instead of Change"],
+      [/>Evidence</, "use 根拠 instead of Evidence"],
+      [/>Decision</, "use 判断 instead of Decision"],
+      [/>Source File</, "use ソースファイル instead of Source File"],
+      [/>Original URL</, "use 元URL instead of Original URL"],
+      [/>Related Report</, "use 関連レポート instead of Related Report"],
+      [/>Related Knowledge</, "use 関連知識 instead of Related Knowledge"],
+      [/>Strength</, "use 強度 instead of Strength"],
+      [/Novelty:/, "use 新規性 instead of Novelty"],
+      [/>internal note</, "use 内部メモ instead of internal note"],
+    ];
+    for (const [pattern, message] of forbiddenJapaneseLabels) {
+      if (pattern.test(report)) failures.push(`Japanese report contains English label: ${message}`);
+    }
   }
 
   const signalCards = countMatches(report, /class="signal-card"/g);

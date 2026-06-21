@@ -4,7 +4,7 @@
 
 {{theme}}
 
-{{project_name}} / Daily Signal Report
+{{project_name}} / 日次シグナルレポート
 
 ## 1. 今日の3行要約
 
@@ -57,12 +57,12 @@
 
 {{pain_point_2_body}}
 
-- Source File: `{{source_file}}`
-- Original URL: {{original_url_or_internal_note}}
-- Related Report: `{{related_report_path_or_none}}`
-- Related Knowledge: `{{related_knowledge_path_or_none}}`
-- Strength: {{strength}}
-- Novelty: {{novelty}}
+- ソースファイル: `{{source_file}}`
+- 元URL: {{original_url_or_internal_note}}
+- 関連レポート: `{{related_report_path_or_none}}`
+- 関連知識: `{{related_knowledge_path_or_none}}`
+- 強度: {{strength}}
+- 新規性: {{novelty}}
 
 ## 4. 課題の深化
 
@@ -96,7 +96,7 @@
 
 ## 6. 次へのアイデア
 
-| アイデア | Why Matters |
+| アイデア | 重要性 |
 |---|---|
 | {{idea_1}} | {{why_it_matters_1}} |
 | {{idea_2}} | {{why_it_matters_2}} |
@@ -106,9 +106,9 @@
 
 {{editor_note_body}}
 
-Observed by Kizashi
+Kizashi による観測
 
-## 8. Feedback
+## 8. フィードバック
 
 フィードバックがある場合は、このレポートの観点、取り上げるシグナル、仮説の方向性、次へのアイデアに修正したい点を、Codex に「Kizashi Skill に {{feedback_text}} をフィードバックして」と依頼してください。
 
@@ -118,22 +118,22 @@ Kizashi は内容に応じて、スキル・テンプレート・情報ソース
 Kizashi Agent Notes:
 - Save this report under <wiki>/reports/daily/ so wiki query can retrieve it later. Do not leave a Daily Report only under kizashi/review/ or another project workflow folder.
 - Use assets/templates/daily-signal-report.html when the final deliverable should be a polished visual report.
-- Do not change the fixed template headings: 今日の3行要約, 本日のレポート, シグナル, 課題の深化, 仮説の更新, 次へのアイデア, 編集後記：今後の展望, Feedback.
+- Do not change the fixed template headings: 今日の3行要約, 本日のレポート, シグナル, 課題の深化, 仮説の更新, 次へのアイデア, 編集後記：今後の展望, フィードバック.
 - Keep the hero background image in HTML reports: https://hachiware-labs.com/images/hero/lab-building-with-sign.png.
 - Keep the brand image in HTML reports: https://hachiware-labs.com/images/hero/hachiware-character.png.
 - Theme: include a dated theme in the form YYYY/M/Dのテーマ and explain the day's focus in the lead.
 - Summary: write exactly three useful summary bullets; do not leave generic filler.
-- Signals: normally include at least 3 signal cards. Each signal needs a title, 2 detailed context paragraphs, 2 pain points, change sign, past-report/knowledge connection, Source File, Original URL, Related Report, Related Knowledge, Strength, and Novelty.
+- Signals: normally include at least 3 signal cards. Each signal needs a Japanese title, 2 detailed context paragraphs, 2 pain points, change sign, past-report/knowledge connection, ソースファイル, 元URL, 関連レポート, 関連知識, 強度, and 新規性.
 - Problem deepening: include at least 4 cards or equivalent sections, each with enough detail to explain the current problem, structure, failed workaround, or deeper question.
-- Hypothesis updates: include at least 2 updates unless no hypothesis changed; each needs Change, Evidence, and Decision.
-- Next ideas: include at least 3 ideas. Why Matters must be a detailed paragraph, not a short label.
+- Hypothesis updates: include at least 2 updates unless no hypothesis changed; each hypothesis label, name, Change, Evidence, and Decision must be written in Japanese.
+- Next ideas: include at least 3 ideas. Idea names and 重要性 paragraphs must be written in Japanese; do not leave English labels such as Idea or Why Matters.
 - Editor's note: include at least 5 paragraphs, roughly 15-20 lines of reading depth.
-- Feedback: keep the fixed feedback section and explain how to send feedback to Kizashi.
+- フィードバック: keep the fixed feedback section and explain how to send feedback to Kizashi.
 - No unresolved {{placeholders}} may remain in the final report.
 - Run node scripts/validate-daily-report.js <report.html> before saying an HTML report is complete.
 - Preserve source URLs whenever available.
 - For important signals, perform scoped surrounding investigation before synthesis: related URLs, adjacent sources, official docs, past reports, existing wiki pages, and counter-signals.
-- Use "internal note" only when no external URL exists.
+- For Japanese reports, use "内部メモ" only when no external URL exists.
 - Connect signals to past reports and existing knowledge when relevant, but do not force a connection.
 - Store one-off user-provided ideas through the LLM Wiki ingest flow before using them in later reports.
 - Handle "feedback this to Kizashi" requests through the Kizashi Feedback flow: update skill/templates/docs/source registry when the feedback changes behavior, or record it under <wiki>/raw/feedback/ when it is user-specific knowledge or preference.

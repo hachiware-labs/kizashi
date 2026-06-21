@@ -814,7 +814,7 @@
           <img src="https://hachiware-labs.com/images/hero/hachiware-character.png" alt="" />
           <div>
             <strong>KIZASHI</strong>
-            <span>HACHIWARE LABS / DAILY SIGNAL</span>
+            <span>HACHIWARE LABS / 日次シグナル</span>
           </div>
         </div>
         <div class="date">{{date_dot}} / {{timezone}}</div>
@@ -839,7 +839,7 @@
       <section class="report-overview" aria-label="本日のレポート">
         <div class="overview-card">
           <div class="overview-copy">
-            <p class="eyebrow">REPORT INDEX</p>
+            <p class="eyebrow">レポート索引</p>
             <h2>本日のレポート</h2>
             <p>{{report_index_note}}</p>
           </div>
@@ -862,7 +862,7 @@
             {{#signals}}
             <article class="signal-card">
               <div class="signal-top">
-                <span class="signal-id">Signal {{number}}</span>
+                <span class="signal-id">シグナル {{number}}</span>
               </div>
               <div class="signal-body">
                 <h3>{{title}}</h3>
@@ -878,11 +878,11 @@
                 </div>
                 <div class="source">
                   <dl>
-                    <dt>Source File</dt><dd>{{source_file}}</dd>
-                    <dt>Original URL</dt><dd>{{original_url_or_internal_note}}</dd>
-                    <dt>Related Report</dt><dd>{{related_report_path_or_none}}</dd>
-                    <dt>Related Knowledge</dt><dd>{{related_knowledge_path_or_none}}</dd>
-                    <dt>Strength</dt><dd>{{strength}} / Novelty: {{novelty}}</dd>
+                    <dt>ソースファイル</dt><dd>{{source_file}}</dd>
+                    <dt>元URL</dt><dd>{{original_url_or_internal_note}}</dd>
+                    <dt>関連レポート</dt><dd>{{related_report_path_or_none}}</dd>
+                    <dt>関連知識</dt><dd>{{related_knowledge_path_or_none}}</dd>
+                    <dt>強度</dt><dd>{{strength}} / 新規性: {{novelty}}</dd>
                   </dl>
                 </div>
               </div>
@@ -915,20 +915,20 @@
           <div class="hypothesis-board">
             {{#hypothesis_updates}}
             <article class="hypothesis-card">
-              <div class="hypothesis-label">Updated Hypothesis {{id}}</div>
+              <div class="hypothesis-label">更新仮説 {{id}}</div>
               <h3>{{title}}</h3>
               <p>{{body}}</p>
               <div class="hypothesis-meta">
                 <div>
-                  <span>Change</span>
+                  <span>変更</span>
                   <strong>{{change}}</strong>
                 </div>
                 <div>
-                  <span>Evidence</span>
+                  <span>根拠</span>
                   <strong>{{evidence}}</strong>
                 </div>
                 <div>
-                  <span>Decision</span>
+                  <span>判断</span>
                   <strong>{{decision}}</strong>
                 </div>
               </div>
@@ -944,17 +944,17 @@
           </div>
           <div class="action-queue">
             <div class="action-row action-head">
-              <div>Idea</div>
-              <div>Why Matters</div>
+              <div>アイデア</div>
+              <div>重要性</div>
             </div>
             {{#next_ideas}}
             <div class="action-row">
               <div class="action-main">
-                <span class="mobile-label">Idea</span>
+                <span class="mobile-label">アイデア</span>
                 {{idea}}
               </div>
               <div class="action-reason">
-                <span class="mobile-label">Why Matters</span>
+                <span class="mobile-label">重要性</span>
                 {{why_matters}}
               </div>
             </div>
@@ -969,13 +969,13 @@
           </div>
           <article class="draft">
             {{editor_note_html}}
-            <div class="signature">Observed by Kizashi</div>
+            <div class="signature">Kizashi による観測</div>
           </article>
         </section>
 
         <section class="section">
           <div class="section-head">
-            <h2>Feedback</h2>
+            <h2>フィードバック</h2>
             <p class="section-note">レポートの精度、構成、次に見たい観点を改善するための導線。</p>
           </div>
           <div class="feedback-note">
@@ -988,24 +988,24 @@
       <footer class="footer">
         <div>
           <strong>KIZASHI / HACHIWARE LABS</strong>
-          <span>Turns a growing llm-wiki into daily signal reports.</span>
+          <span>成長する llm-wiki を日次シグナルレポートへ変換する。</span>
         </div>
-        <span>Observe -> Decide -> Act</span>
+        <span>観測 -> 判断 -> 実行</span>
       </footer>
     </article>
     <!--
       Kizashi Daily Completion Checklist:
-      - Do not change the fixed template headings: 今日の3行要約, 本日のレポート, シグナル, 課題の深化, 仮説の更新, 次へのアイデア, 編集後記：今後の展望, Feedback.
+      - Do not change the fixed template headings: 今日の3行要約, 本日のレポート, シグナル, 課題の深化, 仮説の更新, 次へのアイデア, 編集後記：今後の展望, フィードバック.
       - Keep the hero background image exactly as the template defines it: https://hachiware-labs.com/images/hero/lab-building-with-sign.png.
       - Keep the brand image exactly as the template defines it: https://hachiware-labs.com/images/hero/hachiware-character.png.
       - Theme: include a dated theme in the form YYYY/M/Dのテーマ and explain the day's focus in the lead.
       - Summary: write exactly three useful summary bullets; do not leave generic filler.
-      - Signals: normally include at least 3 signal cards. Each signal needs a title, 2 detailed context paragraphs, 2 pain points, change sign, past-report/knowledge connection, Source File, Original URL, Related Report, Related Knowledge, Strength, and Novelty.
+      - Signals: normally include at least 3 signal cards. Each signal needs a Japanese title, 2 detailed context paragraphs, 2 pain points, change sign, past-report/knowledge connection, ソースファイル, 元URL, 関連レポート, 関連知識, 強度, and 新規性.
       - Problem deepening: include at least 4 cards or equivalent sections, each with enough detail to explain the current problem, structure, failed workaround, or deeper question.
-      - Hypothesis updates: include at least 2 updates unless no hypothesis changed; each needs Change, Evidence, and Decision.
-      - Next ideas: include at least 3 ideas. Why Matters must be a detailed paragraph, not a short label.
+      - Hypothesis updates: include at least 2 updates unless no hypothesis changed; each hypothesis label, name, Change, Evidence, and Decision must be written in Japanese.
+      - Next ideas: include at least 3 ideas. Idea names and 重要性 paragraphs must be written in Japanese; do not leave English labels such as Idea or Why Matters.
       - Editor's note: include at least 5 paragraphs, roughly 15-20 lines of reading depth.
-      - Feedback: keep the fixed feedback section and explain how to send feedback to Kizashi.
+      - フィードバック: keep the fixed feedback section and explain how to send feedback to Kizashi.
       - No unresolved {{placeholders}} may remain in the final report.
       - Run node scripts/validate-daily-report.js <report.html> before saying the report is complete.
     -->

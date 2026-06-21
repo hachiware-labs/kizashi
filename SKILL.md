@@ -117,6 +117,7 @@ $kizashi lint my llm-wiki: deduplicate weak notes, connect related reports, add 
 - **Review**: synthesize evidence patches, update hypotheses and evaluations, decide continue/narrow/merge/park/split, and write review output under `kizashi/review/`.
 - **Positioning**: reassess market room, vendor encroachment, buyer, pricing, adoption unit, and external product wedge; write positioning output under `kizashi/positioning/`.
 - **Daily Report**: when the user asks for a report, always create a dated report file; do not stop at an inline chat summary, source synthesis, review memo, or strategic note. Use Computer Use for user-visible source capture when needed, save captures under `<wiki>/raw/app-captures/`, then generate `<wiki>/reports/daily/YYYY-MM-DD.md` and, unless the user explicitly asks for Markdown only, `<wiki>/reports/daily/YYYY-MM-DD.html` from user-selected sources and existing wiki knowledge using `assets/templates/daily-signal-report.md` and `assets/templates/daily-signal-report.html`; index and log the report. Daily Reports must live inside the LLM Wiki so wiki query can retrieve and connect them later.
+- **Daily Report Review**: when asked to review, inspect, finalize, or validate a Daily Report, check it against the same completion gate used during generation. Verify the report exists under `<wiki>/reports/daily/`, uses the standard headings without drift, preserves the template design shell and hero background image, meets the required section depth, keeps source metadata visible, uses the user's language for generated labels and item names, has no unresolved placeholders, is indexed/logged in the wiki, and passes `scripts/validate-daily-report.js` when HTML is present. If any check fails, fix the report or report it as incomplete; do not approve it.
 - **LLM Wiki Ingest**: trigger on concrete memory requests such as `$kizashi AIレビューでは根拠URLを必ず残す、と覚えて`, `$kizashi remember that AI review findings should always keep evidence URLs`, `$kizashi ...を覚えて`, or `$kizashi remember ...`. Store one-off ideas, observations, pasted notes, URLs, or remembered facts in the LLM Wiki `raw/` tree and update durable wiki pages with source, context, tags, and later-use guidance.
 - **LLM Wiki Query**: trigger on requests such as `$kizashi ...を調べて`, `$kizashi ...を教えて`, `$kizashi research ...`, `$kizashi tell me ...`, or `$kizashi explain ...` unless the user explicitly asks for source editing, daily report creation, or ingestion. Answer from the LLM Wiki and configured sources; cite source files and original URLs when available, save durable answers under `queries/` when useful, and distinguish current inference from recorded facts.
 - **LLM Wiki Lint / Refinement**: lint and refine the LLM Wiki by deduplicating notes, connecting related reports, adding missing source URLs, marking stale claims, and sharpening vague ideas into reusable concepts.
@@ -131,7 +132,9 @@ Use `assets/templates/daily-signal-report.md` as the structure template and `ass
 
 The HTML template is mandatory, not decorative. A valid Kizashi Daily HTML report must preserve the template's `<style>` block, `.hero` background image, brand image, report overview card, signal cards, pain-point cards, source metadata, feedback block, and footer. Do not replace the template with a plain article, ad hoc dashboard, Markdown export, or custom "trend map" layout unless the user explicitly asks for a different format. If the background image or template assets are unavailable, report that as a generation blocker or use the exact remote image URLs from the template; do not silently omit the hero background.
 
-The Markdown and HTML templates include a final "Kizashi Daily Completion Checklist" in agent-facing notes/comments. Treat that checklist as a completion gate: fixed headings must not drift, the hero background image must remain present, each section must meet its length/depth requirement, and no unresolved placeholders may remain in the generated report.
+The Markdown and HTML templates include a final "Kizashi Daily Completion Checklist" in agent-facing notes/comments. Treat that checklist as a completion gate: fixed headings must not drift, the hero background image must remain present, each section must meet its length/depth requirement, generated labels and item names must use the user's language, and no unresolved placeholders may remain in the generated report.
+
+For Japanese Daily Reports, write visible report labels and generated item names in Japanese. This includes signal labels and titles, hypothesis labels and hypothesis names, idea names, table headers, metric labels, decision labels, and section helper labels. Do not leave English UI labels such as `Signal`, `Updated Hypothesis`, `Idea`, `Why Matters`, `Change`, `Evidence`, `Decision`, `Source File`, `Strength`, `Novelty`, or `internal note` in the final visible report; use `内部メモ` when no URL exists. Product names, repository names, URLs, file paths, official source titles, and quoted source terminology may stay in their original language when translating them would reduce traceability.
 
 Before saying the report is done, run:
 
@@ -160,8 +163,9 @@ Each signal should include:
 - **Surrounding Investigation** for important signals: related sources checked, adjacent context, what was confirmed, and what is still uncertain;
 - **Past Report / Existing Knowledge Connection** when relevant, without forcing a connection;
 - one or two concrete pain points, not a full 5W1H checklist;
-- `Source File` and `Original URL` whenever an external URL exists; use `internal note` only when no URL exists;
+- source file and original URL labels in the user's language whenever an external URL exists; for Japanese reports, use `ソースファイル`, `元URL`, and `内部メモ` when no URL exists;
 - related report and related knowledge paths when available.
+- for Japanese reports, signal labels and signal titles must be Japanese except for official product names or quoted source terms.
 
 Minimum depth for a normal Daily Report:
 
@@ -169,9 +173,20 @@ Minimum depth for a normal Daily Report:
 - each signal should have two context paragraphs, two pain points, change sign, knowledge connection, source file, and original URL or `internal note`;
 - Problem deepening should include at least 4 cards or equivalent subsections;
 - Hypothesis updates should include at least 2 items unless no hypothesis changed;
-- Next ideas should include at least 3 items, each with a detailed Why Matters paragraph;
+- Hypothesis labels, hypothesis names, changes, evidence summaries, and decisions should be written in the user's language;
+- Next ideas should include at least 3 items, each with a detailed importance paragraph written in the user's language;
 - Editor's note / outlook should contain at least 5 paragraphs in HTML, targeting roughly 15-20 lines of reading depth;
 - the generated HTML should pass `scripts/validate-daily-report.js`.
+
+Daily Report review checklist:
+
+- File placement: report exists under `<wiki>/reports/daily/` and is added to `index.md` and `log.md`.
+- Template fidelity: HTML preserves the `assets/templates/daily-signal-report.html` style block, hero background image, brand image, fixed headings, report overview, signal cards, feedback block, and footer.
+- Heading fidelity: visible section headings must remain Today's theme, Three-line summary, Report index, Signals, Problem deepening, Hypothesis updates, Next ideas, Editor's note / outlook, and Feedback in the user's language; do not approve custom heading drift such as "Trend Map" replacing the Daily Report flow.
+- Language fidelity: generated hypothesis labels/names, signal labels/names, next idea names, table headers, decision labels, and helper labels must be in the user's language. For Japanese reports, reject visible labels such as `Signal`, `Updated Hypothesis`, `Idea`, `Why Matters`, `Change`, `Evidence`, `Decision`, `Source File`, `Strength`, `Novelty`, or `internal note` unless they are part of an official product/source title.
+- Depth: signals, problem deepening, hypothesis updates, next ideas, and editor's note must meet the minimum depth above.
+- Source traceability: each signal must expose source file and original URL or internal note in the user's language.
+- Validation: run `node scripts/validate-daily-report.js <report.html>` for HTML reports and treat failures as review findings.
 
 The daily theme may change from day to day. Kizashi should infer the day's theme from the selected sources and accumulated knowledge, rather than assuming a fixed ongoing topic.
 
@@ -314,6 +329,7 @@ kizashi report --name YYYY-MM-DD-hypothesis-review
 - Daily reports must use the Kizashi Daily flow unless the user asks for a different format.
 - Daily report requests must create files under `<wiki>/reports/daily/`; answering with only an inline summary is incomplete.
 - Daily report HTML must preserve the design shell from `assets/templates/daily-signal-report.html`, including the hero background image. Use `scripts/validate-daily-report.js` before completion.
+- Daily report visible labels and generated item names must use the user's language. For Japanese reports, do not leave English labels such as `Signal`, `Updated Hypothesis`, `Idea`, `Why Matters`, `Change`, `Evidence`, or `Decision` unless they are part of an official source title or product name.
 - In reports, include source URLs whenever available, past-report connections when useful, and change signs inside the relevant signal rather than as a separate "previous change" section.
 - Automation-created and manually requested Daily Reports must be saved under `<wiki>/reports/daily/`, added to `index.md`, and appended to `log.md` so later reports and wiki queries can refer to them. Never leave a Daily Report only under `kizashi/review/`, `kizashi/positioning/`, or `kizashi/outputs/`.
 - Do not name review layers `daily`, `weekly`, or `monthly`; use those words only as cadence hints. The canonical workflow commands are `signal`, `hypo`/`hypothesize`, `review`, and `positioning`.
