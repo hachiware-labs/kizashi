@@ -59,6 +59,11 @@
 
 - ソースファイル: `{{source_file}}`
 - 元URL: {{original_url_or_internal_note}}
+- 確認済みソース: {{verified_source_or_none}}
+- 参照元ソース: {{referenced_source_or_none}}
+- 検証ステータス: {{verification_status}}
+- ソース階層: {{source_tier}}
+- 主張ステータス: {{claim_status}}
 - 関連レポート: `{{related_report_path_or_none}}`
 - 関連知識: `{{related_knowledge_path_or_none}}`
 - 強度: {{strength}}
@@ -129,8 +134,9 @@ Kizashi Agent Notes:
 - Keep the brand image in HTML reports: https://hachiware-labs.com/images/hero/hachiware-character.png.
 - Theme: include a dated theme in the form YYYY/M/Dのテーマ and explain the day's focus in the lead.
 - Summary: write exactly three useful summary bullets; do not leave generic filler.
-- Signals: normally include at least 3 signal cards. Each signal needs a Japanese title, 2 detailed context paragraphs, 2 pain points, change sign, past-report/knowledge connection, ソースファイル, 元URL, 関連レポート, 関連知識, 強度, and 新規性.
+- Signals: normally include at least 3 signal cards. Each signal needs a Japanese title, 2 detailed context paragraphs, 2 pain points, change sign, past-report/knowledge connection, ソースファイル, 元URL, 確認済みソース, 参照元ソース, 検証ステータス, ソース階層, 主張ステータス, 関連レポート, 関連知識, 強度, and 新規性.
 - Signal surrounding investigation: for important signals, compare related sources instead of listing them. Name source-to-source differences, complementarity, contradictions, and remaining uncertainty; if no source supports deeper comparison, write the next source or condition to check.
+- Social / secondary source verification: treat X, Reddit, Hatena, personal blogs, roundup posts, bookmarks, and secondary introductions as pain seeds or social signals by default. For important signals, verify the original post URL, linked article, release note, official docs, issue, or related primary source when possible. If login, deletion, private visibility, or access limits block verification, state the constraint and keep claim_status as observed or unverified.
 - Problem deepening: include at least 4 cards or equivalent sections, each with enough detail to explain the current problem, structure, failed workaround, or deeper question.
 - Hypothesis updates: include at least 2 updates unless no hypothesis changed; each hypothesis label, name, Change, Evidence, and Decision must be written in Japanese. 反証条件 must say which condition would weaken the hypothesis or make an external artifact, ledger, skill, or pipeline unnecessary.
 - Next ideas: include at least 3 ideas. Idea names and 重要性 paragraphs must be written in Japanese; do not leave English labels such as Idea or Why Matters. Each idea must name one concrete PR, skill candidate, UI artifact, source set, or user task for the smallest validation, with success conditions, failure conditions, and observed metrics.
@@ -151,6 +157,11 @@ Kizashi Agent Notes:
   - 反証候補の具体性: どの条件なら仮説が弱まるか、または外部 artifact / ledger / skill / pipeline が不要になるかが次の観測に使える粒度か。
   - 次の検証の小ささ: artifact 名だけでなく、どの1 PR、どの1 skill candidate、どの1 UI artifact、どの1 source set、どの1 user task で試し、何を成功/失敗/指標として見るか。
   - If weak, do not rewrite the whole report. Augment only surrounding investigation, falsification conditions, and next validation conditions once, then run structural validation again.
+- Social / secondary source review:
+  - X / Reddit / Hatena / personal blog / roundup / bookmark / secondary introduction が重要シグナルになっている場合、元投稿またはリンク先、公式情報、関連一次情報を確認したか。
+  - 二次情報を一次情報のように扱っていないか。
+  - 確認できなかった場合、ログイン、削除、非公開、アクセス制限などの制約を明記したか。
+  - ソース階層と主張ステータスが適切か。未確認 social source は observed または unverified として扱い、actionable claim にしない。
 - Preserve source URLs whenever available.
 - For important signals, perform scoped surrounding investigation before synthesis: related URLs, adjacent sources, official docs, past reports, existing wiki pages, and counter-signals.
 - For Japanese reports, use "内部メモ" only when no external URL exists.

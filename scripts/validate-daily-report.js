@@ -100,6 +100,11 @@ function validateDailyReport(file, templateFile) {
       [/>Related Knowledge</, "use 関連知識 instead of Related Knowledge"],
       [/>Strength</, "use 強度 instead of Strength"],
       [/Novelty:/, "use 新規性 instead of Novelty"],
+      [/>Verified Source</, "use 確認済みソース instead of Verified Source"],
+      [/>Referenced Source</, "use 参照元ソース instead of Referenced Source"],
+      [/>Verification Status</, "use 検証ステータス instead of Verification Status"],
+      [/>Source Tier</, "use ソース階層 instead of Source Tier"],
+      [/>Claim Status</, "use 主張ステータス instead of Claim Status"],
       [/>internal note</, "use 内部メモ instead of internal note"],
     ];
     for (const [pattern, message] of forbiddenJapaneseLabels) {
@@ -135,7 +140,7 @@ function validateDailyReport(file, templateFile) {
   }
 
   console.log(`Daily report structural validation passed: ${file}`);
-  console.log("Note: this validates structure, template fidelity, labels, and minimum depth only. Reading quality and decision-log depth must be checked by Daily Report editorial review and decision-log depth review.");
+  console.log("Note: this validates structure, template fidelity, labels, and minimum depth only. Reading quality, decision-log depth, and social/secondary source verification must be checked by Daily Report review gates.");
 }
 
 const args = parseArgs(process.argv.slice(2));
