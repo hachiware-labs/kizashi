@@ -20,7 +20,7 @@ $kizashi hachiware-labs.comを毎日の調査ソースに追加して
 $kizashi 今日のレポートを作って
 ```
 
-レポートは `<wiki-root>/reports/daily/` に保存されます。以後、`$kizashi ...を覚えて` で知識を足し、`$kizashi ...を調べて` や `$kizashi ...を教えて` で過去レポートと知識を使えます。
+レポートは `<wiki-root>/reports/daily/` に保存されます。HTML を作る場合は標準 Daily Report テンプレートを使い、検証してから完了扱いにします。以後、`$kizashi ...を覚えて` で知識を足し、`$kizashi ...を調べて` や `$kizashi ...を教えて` で過去レポートと知識を使えます。
 
 ## 1. 日々の調査をする
 
@@ -67,6 +67,8 @@ $kizashi 今日の情報ソースとllm-wikiの知識からDaily Reportを作っ
 - ブラウザやアプリ画面を Computer Use で取得した材料: `<wiki-root>/raw/app-captures/`
 - レポート索引: `<wiki-root>/index.md`
 - 追記ログ: `<wiki-root>/log.md`
+
+HTML レポートは `assets/templates/daily-signal-report.html` を使います。完了前に `node scripts/validate-daily-report.js <wiki-root>/reports/daily/YYYY-MM-DD.html` を実行し、スクリプトが使えない環境では同等の項目を手動確認します。
 
 Daily Report は wiki 内に保存されるため、後日の query や次回レポートで検索・接続できます。
 

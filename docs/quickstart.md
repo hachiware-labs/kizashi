@@ -20,7 +20,7 @@ $kizashi add hachiware-labs.com as a daily research source
 $kizashi make today's report
 ```
 
-The report is saved under `<wiki-root>/reports/daily/`. After that, use `$kizashi remember ...` to add knowledge and `$kizashi research ...` or `$kizashi tell me ...` to answer from past reports and accumulated knowledge.
+The report is saved under `<wiki-root>/reports/daily/`. When HTML is created, Kizashi uses the standard Daily Report template and validates the file before treating the report as complete. After that, use `$kizashi remember ...` to add knowledge and `$kizashi research ...` or `$kizashi tell me ...` to answer from past reports and accumulated knowledge.
 
 ## 1. Daily Research
 
@@ -67,6 +67,8 @@ Main locations written:
 - Computer Use captures from browser/app material: `<wiki-root>/raw/app-captures/`
 - Report index entry: `<wiki-root>/index.md`
 - Append-only log entry: `<wiki-root>/log.md`
+
+HTML reports should use `assets/templates/daily-signal-report.html`. Before completion, the agent should run `node scripts/validate-daily-report.js <wiki-root>/reports/daily/YYYY-MM-DD.html` or manually verify the same checks when the script is unavailable.
 
 Daily Reports live inside the wiki, so future query and future reports can search and connect them.
 
