@@ -140,7 +140,7 @@ function validateDailyReport(file, templateFile) {
   }
 
   console.log(`Daily report structural validation passed: ${file}`);
-  console.log("Note: this validates structure, template fidelity, labels, and minimum depth only. Reading quality, decision-log depth, and social/secondary source verification must be checked by Daily Report review gates.");
+  console.log("Note: this validates structure, template fidelity, labels, and minimum depth only. Reading quality, Japanese readability, decision-log depth, and social/secondary source verification must be checked by Daily Report review gates.");
 }
 
 const args = parseArgs(process.argv.slice(2));
