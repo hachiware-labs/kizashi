@@ -134,7 +134,8 @@ function validateDailyReport(file, templateFile) {
     fail(`Daily report validation failed for ${file}:\n- ${failures.join("\n- ")}`);
   }
 
-  console.log(`Daily report is valid: ${file}`);
+  console.log(`Daily report structural validation passed: ${file}`);
+  console.log("Note: this validates structure, template fidelity, labels, and minimum depth only. Reading quality must be checked by Daily Report editorial review.");
 }
 
 const args = parseArgs(process.argv.slice(2));

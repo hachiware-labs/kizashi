@@ -118,6 +118,12 @@ Kizashi は内容に応じて、スキル・テンプレート・情報ソース
 Kizashi Agent Notes:
 - Save this report under <wiki>/reports/daily/ so wiki query can retrieve it later. Do not leave a Daily Report only under kizashi/review/ or another project workflow folder.
 - Use assets/templates/daily-signal-report.html when the final deliverable should be a polished visual report.
+- Treat each section as an editorial question, not a required slot:
+  - シグナル: 今日何が不可逆に変わりつつあるのか。source summary ではなく、変化と判断への影響から書く。
+  - 課題の深化: 抽象カテゴリではなく、現場で詰まる具体場面、失敗、判断から始める。
+  - 仮説の更新: 作成、継続、絞り込み、強化、弱化、統合、保留など、今日の evidence による判断差分を書く。
+  - 次へのアイデア: artifact 名だけで終わらせず、最小検証、成功/失敗の見方、なぜ今やるかを書く。
+  - 編集後記: 全体の読み筋を回収し、次回観測する問いで終える。
 - Do not change the fixed template headings: 今日の3行要約, 本日のレポート, シグナル, 課題の深化, 仮説の更新, 次へのアイデア, 編集後記：今後の展望, フィードバック.
 - Keep the hero background image in HTML reports: https://hachiware-labs.com/images/hero/lab-building-with-sign.png.
 - Keep the brand image in HTML reports: https://hachiware-labs.com/images/hero/hachiware-character.png.
@@ -131,6 +137,14 @@ Kizashi Agent Notes:
 - フィードバック: keep the fixed feedback section and explain how to send feedback to Kizashi.
 - No unresolved {{placeholders}} may remain in the final report.
 - Run node scripts/validate-daily-report.js <report.html> before saying an HTML report is complete.
+- Validator success is structural only. After validation, run editorial self-review before completion.
+- Editorial self-review:
+  - 読み筋: 今日のテーマから次アクションまで自然につながっているか。
+  - 具体性: 抽象概念が現場の場面、失敗、判断に接続されているか。
+  - 差分: 今日の source で何が新しく分かったかが明確か。
+  - 判断可能性: 読者が次に何を見る/作る/検証するべきか分かるか。
+  - 文章密度: 必須項目を埋めただけの説明になっていないか。
+- If editorial self-review is weak, revise once, then run structural validation again.
 - Preserve source URLs whenever available.
 - For important signals, perform scoped surrounding investigation before synthesis: related URLs, adjacent sources, official docs, past reports, existing wiki pages, and counter-signals.
 - For Japanese reports, use "内部メモ" only when no external URL exists.

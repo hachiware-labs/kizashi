@@ -116,8 +116,8 @@ $kizashi lint my llm-wiki: deduplicate weak notes, connect related reports, add 
 - **Signal**: capture source signals as append-only evidence patches under `kizashi/signal/`. Do not edit hypotheses or evaluations in this layer. When a candidate signal is important, perform scoped deep-dive research around it instead of relying only on the first source: inspect related sources, source-linked pages, past reports, existing wiki concepts, adjacent product/release/docs context, and counter-evidence. Keep the deep dive bounded and record both supporting and uncertain points.
 - **Review**: synthesize evidence patches, update hypotheses and evaluations, decide continue/narrow/merge/park/split, and write review output under `kizashi/review/`.
 - **Positioning**: reassess market room, vendor encroachment, buyer, pricing, adoption unit, and external product wedge; write positioning output under `kizashi/positioning/`.
-- **Daily Report**: when the user asks for a report, always create a dated report file; do not stop at an inline chat summary, source synthesis, review memo, or strategic note. Use Computer Use for user-visible source capture when needed, save captures under `<wiki>/raw/app-captures/`, then generate `<wiki>/reports/daily/YYYY-MM-DD.md` and, unless the user explicitly asks for Markdown only, `<wiki>/reports/daily/YYYY-MM-DD.html` from user-selected sources and existing wiki knowledge using `assets/templates/daily-signal-report.md` and `assets/templates/daily-signal-report.html`; index and log the report. Daily Reports must live inside the LLM Wiki so wiki query can retrieve and connect them later.
-- **Daily Report Review**: when asked to review, inspect, finalize, or validate a Daily Report, check it against the same completion gate used during generation. Verify the report exists under `<wiki>/reports/daily/`, uses the standard headings without drift, preserves the template design shell and hero background image, meets the required section depth, keeps source metadata visible, uses the user's language for generated labels and item names, has no unresolved placeholders, is indexed/logged in the wiki, and passes `scripts/validate-daily-report.js` when HTML is present. If any check fails, fix the report or report it as incomplete; do not approve it.
+- **Daily Report**: when the user asks for a report, always create a dated report file; do not stop at an inline chat summary, source synthesis, review memo, or strategic note. Use Computer Use for user-visible source capture when needed, save captures under `<wiki>/raw/app-captures/`, then generate `<wiki>/reports/daily/YYYY-MM-DD.md` and, unless the user explicitly asks for Markdown only, `<wiki>/reports/daily/YYYY-MM-DD.html` from user-selected sources and existing wiki knowledge using `assets/templates/daily-signal-report.md` and `assets/templates/daily-signal-report.html`; index and log the report. Daily Reports must live inside the LLM Wiki so wiki query can retrieve and connect them later. After structural validation, run an editorial self-review and revise once when the report reads like a source-summary checklist instead of a coherent report.
+- **Daily Report Review**: when asked to review, inspect, finalize, or validate a Daily Report, check it against the same completion gate used during generation. Verify the report exists under `<wiki>/reports/daily/`, uses the standard headings without drift, preserves the template design shell and hero background image, meets the required section depth, keeps source metadata visible, uses the user's language for generated labels and item names, has no unresolved placeholders, is indexed/logged in the wiki, and passes `scripts/validate-daily-report.js` when HTML is present. Then run editorial review for reading flow, specificity, source-driven difference, decision usefulness, and prose density. If any structural or editorial check fails, fix the report or report it as incomplete; do not approve it.
 - **LLM Wiki Ingest**: trigger on concrete memory requests such as `$kizashi AIレビューでは根拠URLを必ず残す、と覚えて`, `$kizashi remember that AI review findings should always keep evidence URLs`, `$kizashi ...を覚えて`, or `$kizashi remember ...`. Store one-off ideas, observations, pasted notes, URLs, or remembered facts in the LLM Wiki `raw/` tree and update durable wiki pages with source, context, tags, and later-use guidance.
 - **LLM Wiki Query**: trigger on requests such as `$kizashi ...を調べて`, `$kizashi ...を教えて`, `$kizashi research ...`, `$kizashi tell me ...`, or `$kizashi explain ...` unless the user explicitly asks for source editing, daily report creation, or ingestion. Answer from the LLM Wiki and configured sources; cite source files and original URLs when available, save durable answers under `queries/` when useful, and distinguish current inference from recorded facts.
 - **LLM Wiki Lint / Refinement**: lint and refine the LLM Wiki by deduplicating notes, connecting related reports, adding missing source URLs, marking stale claims, and sharpening vague ideas into reusable concepts.
@@ -144,6 +144,8 @@ node scripts/validate-daily-report.js <wiki-root>/reports/daily/YYYY-MM-DD.html
 
 If the skill is installed outside the repository, run the same script from the installed skill package. If the validator is unavailable, manually verify the same checks: exact Kizashi Daily design shell, hero background image, no unresolved placeholders, all required sections, sufficient body length, source URLs, and feedback text. Do not present an invalid report as complete.
 
+Structural validation is necessary but not sufficient. Do not treat validator success as completion until the report also passes editorial self-review. Daily Report is a reading artifact for product judgment, not a source summary table.
+
 The canonical section flow is:
 
 1. Today's theme
@@ -156,9 +158,22 @@ The canonical section flow is:
 8. Editor's note / outlook
 9. Feedback
 
+Treat each section heading as an editorial question, not a slot to fill:
+
+- Today's theme: What is the day's real point of attention, with date and context?
+- Three-line summary: What should the reader remember before reading the details?
+- Report index: What volume and shape of material is covered today?
+- Signals: What is becoming hard to reverse or newly visible today, beyond a source summary?
+- Problem deepening: In what concrete work scene does the user get stuck, and why does the structure create that pain?
+- Hypothesis updates: Which view changed today: created, continued, narrowed, strengthened, weakened, merged, or parked, and why?
+- Next ideas: What is the smallest validation, what would count as success or failure, and why now?
+- Editor's note / outlook: What reading thread ties the report together, and what question should the next report observe?
+- Feedback: What should the user tell Kizashi if the report's angle, depth, or next questions are wrong?
+
 Each signal should include:
 
 - two detailed context paragraphs, each long enough to explain the situation, structure, and why it matters;
+- what changed, whose decision becomes harder, and why the old workaround is no longer enough;
 - **Change Sign**: what seems to be starting, shifting, intensifying, or becoming visible in the source set;
 - **Surrounding Investigation** for important signals: related sources checked, adjacent context, what was confirmed, and what is still uncertain;
 - **Past Report / Existing Knowledge Connection** when relevant, without forcing a connection;
@@ -166,6 +181,17 @@ Each signal should include:
 - source file and original URL labels in the user's language whenever an external URL exists; for Japanese reports, use `ソースファイル`, `元URL`, and `内部メモ` when no URL exists;
 - related report and related knowledge paths when available.
 - for Japanese reports, signal labels and signal titles must be Japanese except for official product names or quoted source terms.
+
+Editorial quality rules:
+
+- Do not end at source summary. Use sources as evidence for a reading of what is changing, what gets harder, and what should be tested next.
+- When using abstract words such as contract, governance, memory, workflow, source-grounded, or quality, connect them to a concrete work scene, failure, decision, or artifact.
+- Signals must start from the observed change and its consequence, not from the source title.
+- Problem deepening must begin from a concrete stuck moment in the user's or target user's work, not from an abstract category.
+- Hypothesis updates must explain how today's evidence moved the view: created, continued, narrowed, strengthened, weakened, merged, parked, or split.
+- Next ideas must include the smallest validation, success/failure reading, and why now; do not list only artifact names.
+- Editor's note must recover the reading thread across the report and end with the next observation question.
+- If the draft feels like a checklist of required fields or a list of source summaries, revise once before completion.
 
 Minimum depth for a normal Daily Report:
 
@@ -187,6 +213,15 @@ Daily Report review checklist:
 - Depth: signals, problem deepening, hypothesis updates, next ideas, and editor's note must meet the minimum depth above.
 - Source traceability: each signal must expose source file and original URL or internal note in the user's language.
 - Validation: run `node scripts/validate-daily-report.js <report.html>` for HTML reports and treat failures as review findings.
+- Editorial review: after validation, check reading flow, specificity, source-driven difference, decision usefulness, and prose density. If weak, revise once and re-run structural validation.
+
+Editorial review questions:
+
+- Reading flow: Does the report naturally connect today's theme, signals, problem deepening, hypothesis movement, next ideas, and editor's note?
+- Specificity: Are abstract concepts tied to concrete scenes, failures, decisions, or artifacts?
+- Difference: Is it clear what today's sources newly changed or clarified?
+- Decision usefulness: Can the reader tell what to inspect, create, or test next?
+- Prose density: Does the report read like an article with judgment, or merely a checklist filled with source summaries?
 
 The daily theme may change from day to day. Kizashi should infer the day's theme from the selected sources and accumulated knowledge, rather than assuming a fixed ongoing topic.
 
@@ -329,6 +364,7 @@ kizashi report --name YYYY-MM-DD-hypothesis-review
 - Daily reports must use the Kizashi Daily flow unless the user asks for a different format.
 - Daily report requests must create files under `<wiki>/reports/daily/`; answering with only an inline summary is incomplete.
 - Daily report HTML must preserve the design shell from `assets/templates/daily-signal-report.html`, including the hero background image. Use `scripts/validate-daily-report.js` before completion.
+- Validator success alone is not completion. Run Daily Report editorial self-review after validation and revise once if the report lacks reading flow, specificity, source-driven difference, decision usefulness, or prose density.
 - Daily report visible labels and generated item names must use the user's language. For Japanese reports, do not leave English labels such as `Signal`, `Updated Hypothesis`, `Idea`, `Why Matters`, `Change`, `Evidence`, or `Decision` unless they are part of an official source title or product name.
 - In reports, include source URLs whenever available, past-report connections when useful, and change signs inside the relevant signal rather than as a separate "previous change" section.
 - Automation-created and manually requested Daily Reports must be saved under `<wiki>/reports/daily/`, added to `index.md`, and appended to `log.md` so later reports and wiki queries can refer to them. Never leave a Daily Report only under `kizashi/review/`, `kizashi/positioning/`, or `kizashi/outputs/`.
