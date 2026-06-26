@@ -135,40 +135,41 @@ Kizashi Agent Notes:
 - Theme: include a dated theme in the form YYYY/M/Dのテーマ and explain the day's focus in the lead.
 - Summary: write exactly three useful summary bullets; do not leave generic filler.
 - Signals: normally include at least 3 signal cards. Each signal needs a Japanese title, 2 detailed context paragraphs, 2 pain points, change sign, past-report/knowledge connection, ソースファイル, 元URL, 確認済みソース, 参照元ソース, 検証ステータス, ソース階層, 主張ステータス, 関連レポート, 関連知識, 強度, and 新規性.
+- Japanese language gate: for Japanese reports, all visible prose and metadata values must be Japanese. Product names, URLs, file paths, official source titles, API names, and code identifiers may stay in English, but surrounding explanation, generated names, status values, and metadata values must be Japanese. Use Japanese equivalents such as 行動可能, 根拠あり, 観測, 未検証, 公式, 社会的シグナル, 編集レビュー, 判断ログ深度レビュー, 社会/二次ソース検証, 実行時証拠, ループ準備度の比較表, 根拠を保持する編集ループ, インターフェース保持, 社会的シグナルの昇格ゲート, 査読者, 進行役, 採用状況, 証拠, and 公式 / 一次 / 社会的.
 - Signal surrounding investigation: for important signals, compare related sources instead of listing them. Name source-to-source differences, complementarity, contradictions, and remaining uncertainty; if no source supports deeper comparison, write the next source or condition to check.
-- Social / secondary source verification: treat X, Reddit, Hatena, personal blogs, roundup posts, bookmarks, and secondary introductions as pain seeds or social signals by default. For important signals, verify the original post URL, linked article, release note, official docs, issue, or related primary source when possible. If login, deletion, private visibility, or access limits block verification, state the constraint and keep claim_status as observed or unverified.
+- Social / secondary source verification: treat X, Reddit, Hatena, personal blogs, roundup posts, bookmarks, and secondary introductions as pain seeds or social signals by default. For important signals, verify the original post URL, linked article, release note, official docs, issue, or related primary source when possible. If login, deletion, private visibility, or access limits block verification, state the constraint and keep 主張ステータス as 観測または未検証.
 - Problem deepening: include at least 4 cards or equivalent sections, each with enough detail to explain the current problem, structure, failed workaround, or deeper question.
-- Hypothesis updates: include at least 2 updates unless no hypothesis changed; each hypothesis label, name, Change, Evidence, and Decision must be written in Japanese. 反証条件 must say which condition would weaken the hypothesis or make an external artifact, ledger, skill, or pipeline unnecessary.
-- Next ideas: include at least 3 ideas. Idea names and 重要性 paragraphs must be written in Japanese; do not leave English labels such as Idea or Why Matters. Each idea must name one concrete PR, skill candidate, UI artifact, source set, or user task for the smallest validation, with success conditions, failure conditions, and observed metrics.
+- Hypothesis updates: include at least 2 updates unless no hypothesis changed; each hypothesis label, name, 変更, 根拠, and 判断 must be written in Japanese. Prefer Japanese hypothesis display names unless the hypothesis file title is itself an established product/technical name. 反証条件 must say which condition would weaken the hypothesis or make an external artifact, ledger, skill, or pipeline unnecessary.
+- Next ideas: include at least 3 ideas. Idea names and 重要性 paragraphs must be written in Japanese; do not leave English labels or English generated names such as Idea, Why Matters, runtime / simulation ledger, loop-readiness matrix, AI-interface preservation test, or social claim promotion gate. Each idea must name one concrete PR, skill candidate, UI artifact, source set, or user task for the smallest validation, with success conditions, failure conditions, and observed metrics.
 - Editor's note: include at least 5 paragraphs, roughly 15-20 lines of reading depth.
 - フィードバック: keep the fixed feedback section and explain how to send feedback to Kizashi.
 - No unresolved {{placeholders}} may remain in the final report.
 - Run node scripts/validate-daily-report.js <report.html> before saying an HTML report is complete.
 - Validator success is structural only. After validation, run editorial self-review before completion.
-- Editorial self-review:
+- 編集レビュー:
   - 読み筋: 今日のテーマから次アクションまで自然につながっているか。
   - 具体性: 抽象概念が現場の場面、失敗、判断に接続されているか。
   - 差分: 今日の source で何が新しく分かったかが明確か。
   - 判断可能性: 読者が次に何を見る/作る/検証するべきか分かるか。
   - 文章密度: 必須項目を埋めただけの説明になっていないか。
 - If editorial self-review is weak, revise once, then run structural validation again.
-- Japanese readability review:
+- 日本語可読性レビュー:
   - 自然さ: 英語の計画文を直訳したような硬さがなく、ユーザー向けレポートとして読めるか。
   - 文の形: 1文が長すぎず、主張、根拠、含意が追いやすいか。
   - 具体語: 抽象語だけで進まず、場面、行為者、成果物、判断に接続しているか。
   - 接続: ただし、一方で、そのため、次に見るべきなのは、などの接続が自然か。
   - 表面品質: 助詞、同じ文末の連続、不自然なカタカナ語、名詞句の連結を整えているか。
   - If Japanese prose is stiff, machine-translated, too abstract, or hard to follow, revise wording once without weakening evidence or structure.
-- Decision-log depth review after editorial self-review:
+- 編集レビュー後の判断ログ深度レビュー:
   - 周辺調査の厚み: 重要シグナルで source を列挙するだけでなく、公式 source 同士の差分、補完関係、矛盾、残る不確実性を書いているか。
   - 反証候補の具体性: どの条件なら仮説が弱まるか、または外部 artifact / ledger / skill / pipeline が不要になるかが次の観測に使える粒度か。
   - 次の検証の小ささ: artifact 名だけでなく、どの1 PR、どの1 skill candidate、どの1 UI artifact、どの1 source set、どの1 user task で試し、何を成功/失敗/指標として見るか。
   - If weak, do not rewrite the whole report. Augment only surrounding investigation, falsification conditions, and next validation conditions once, then run structural validation again.
-- Social / secondary source review:
+- 社会/二次ソース検証:
   - X / Reddit / Hatena / personal blog / roundup / bookmark / secondary introduction が重要シグナルになっている場合、元投稿またはリンク先、公式情報、関連一次情報を確認したか。
   - 二次情報を一次情報のように扱っていないか。
   - 確認できなかった場合、ログイン、削除、非公開、アクセス制限などの制約を明記したか。
-  - ソース階層と主張ステータスが適切か。未確認 social source は observed または unverified として扱い、actionable claim にしない。
+  - ソース階層と主張ステータスが適切か。未確認の社会的シグナルは観測または未検証として扱い、行動可能な主張にしない。
 - Preserve source URLs whenever available.
 - For important signals, perform scoped surrounding investigation before synthesis: related URLs, adjacent sources, official docs, past reports, existing wiki pages, and counter-signals.
 - For Japanese reports, use "内部メモ" only when no external URL exists.

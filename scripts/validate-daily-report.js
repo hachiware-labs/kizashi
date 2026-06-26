@@ -20,6 +20,7 @@ function extractStyle(content) {
 
 function stripTags(content) {
   return content
+    .replace(/<!--[\s\S]*?-->/g, " ")
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<[^>]+>/g, " ")
@@ -52,6 +53,7 @@ function parseArgs(argv) {
 function validateDailyReport(file, templateFile) {
   const report = read(file);
   const template = read(templateFile);
+  const reportWithoutComments = report.replace(/<!--[\s\S]*?-->/g, " ");
   const reportText = stripTags(report);
   const failures = [];
 
@@ -106,9 +108,34 @@ function validateDailyReport(file, templateFile) {
       [/>Source Tier</, "use ソース階層 instead of Source Tier"],
       [/>Claim Status</, "use 主張ステータス instead of Claim Status"],
       [/>internal note</, "use 内部メモ instead of internal note"],
+      [/Editorial self-review/i, "use 編集レビュー instead of Editorial self-review"],
+      [/Decision-log depth review/i, "use 判断ログ深度レビュー instead of Decision-log depth review"],
+      [/Social\s*\/\s*secondary source verification/i, "use 社会/二次ソース検証 instead of Social / secondary source verification"],
+      [/\b(actionable|supported|observed|unverified)\b/i, "use Japanese status values such as 行動可能 / 根拠あり / 観測 / 未検証"],
+      [/\bactionable\s*\/\s*(supported|observed)\b/i, "use Japanese status values such as 行動可能 / 根拠あり"],
+      [/\b(supported|observed|unverified)\s*\/\s*(observed|supported|partly-supported)\b/i, "use Japanese claim status values such as 根拠あり / 観測"],
+      [/\bofficial\s*\/\s*(social|primary|primary_vendor|social-observed)\b/i, "use Japanese source tier values such as 公式 / 社会的シグナル"],
+      [/X posts were browser-visible social signals only/i, "write source verification status in Japanese"],
+      [/official source confirmed/i, "write verification status in Japanese"],
+      [/claims remain observed/i, "write claim status in Japanese"],
+      [/\b(source_tier|claim_status|verified_source|promotion_condition)\b/i, "use Japanese metadata labels in visible report text"],
+      [/\bruntime evidence\b/i, "use 実行時証拠 instead of runtime evidence"],
+      [/\bloop-readiness matrix\b/i, "use ループ準備度の比較表 instead of loop-readiness matrix"],
+      [/\bsource-preserving edit loop\b/i, "use 根拠を保持する編集ループ instead of source-preserving edit loop"],
+      [/\binterface preservation\b/i, "use インターフェース保持 instead of interface preservation"],
+      [/\bsocial claim promotion gate\b/i, "use 社会的シグナルの昇格ゲート instead of social claim promotion gate"],
+      [/\bruntime\s*\/\s*simulation ledger\b/i, "use 実行時/演習記録 instead of runtime / simulation ledger"],
+      [/\bAI-interface preservation test\b/i, "use AIインターフェース保持テスト instead of AI-interface preservation test"],
+      [/\bsource retention\b/i, "use 根拠保持 instead of source retention"],
+      [/\bcontrol clarity\b/i, "use 制御の明確さ instead of control clarity"],
+      [/\bhandoff notes\b/i, "use 引き継ぎメモ instead of handoff notes"],
+      [/\breviewer\b/i, "use 査読者 instead of reviewer"],
+      [/\bfacilitator\b/i, "use 進行役 instead of facilitator"],
+      [/\badoption\b/i, "use 採用状況 instead of adoption"],
+      [/\bproof\b/i, "use 証拠 instead of proof"],
     ];
     for (const [pattern, message] of forbiddenJapaneseLabels) {
-      if (pattern.test(report)) failures.push(`Japanese report contains English label: ${message}`);
+      if (pattern.test(reportWithoutComments)) failures.push(`Japanese report contains English label: ${message}`);
     }
   }
 
